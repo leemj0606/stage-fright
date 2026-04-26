@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>上台緊張四大類型｜完整解析</title>
+<style>
+  :root{
+    --bg:#FCFBFF;
+    --card:#FFFFFF;
+    --ink:#2B2B2B;
+    --sub:#60646C;
+    --border:#E9EDF3;
+    --tag:#8B95A1;
+    /* 四類型主色 */
+    --type-a:#6C5CE7;
+    --type-a-light:#F3F0FF;
+    --type-b:#FF6B6B;
+    --type-b-light:#FFF0F0;
+    --type-c:#00B894;
+    --type-c-light:#F0FFF8;
+    --type-d:#E17055;
+    --type-d-light:#FFF8F0;
+    /* 通用段落色 */
+    --accent:#9DD6DF;
+    --accent-2:#F7CFE3;
+    --accent-3:#FBE8B9;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    background:linear-gradient(180deg, var(--bg) 0%, #F7FAFF 100%);
+    color:var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang TC", "Heiti TC", sans-serif;
+    line-height:1.75;
+    font-size:17px;
+  }
+  .canvas{
+    max-width:1080px;
+    margin:0 auto;
+    padding:24px;
+  }
+  .page-title{
+    text-align:center;
+    padding:32px 0 8px;
+  }
+  .page-title h1{
+    font-size:32px;
+    font-weight:900;
+    letter-spacing:.03em;
+    margin:0 0 8px;
+  }
+  .page-title p{
+    color:var(--sub);
+    font-size:17px;
+    margin:0;
+  }
+
+  /* ── 圖卡 ── */
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    box-shadow:0 6px 20px rgba(39,79,117,.08);
+    overflow:hidden;
+    margin:28px 0;
+    page-break-inside:avoid;
+  }
+  .header{
+    padding:28px 28px 14px 28px;
+    display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+    border-bottom:1px dashed var(--border);
+  }
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:7px 14px;border-radius:999px;font-weight:700;font-size:16px;
+    color:#fff;
+  }
+  .card-title{
+    font-size:28px;font-weight:800;letter-spacing:.02em;width:100%;margin-top:4px;
+  }
+  .card-subtitle{color:var(--sub);font-size:16px;width:100%;margin-top:2px;}
+
+  .body{padding:22px 26px 28px 26px}
+  .section{
+    padding:18px 18px 16px 18px;
+    margin:16px 0;
+    border-radius:12px;
+    border-left:6px solid var(--accent);
+    background:linear-gradient(90deg,#fff 0%,#fcfeff 100%);
+  }
+  .section.alt{border-left-color:var(--accent-2)}
+  .section.alt2{border-left-color:var(--accent-3)}
+  .section h3{margin:0 0 10px 0;font-size:21px;font-weight:800;}
+  .hint{color:var(--sub);font-size:15px;margin-top:6px;padding:8px 12px;background:#F8F9FA;border-radius:8px;}
+
+  .list{margin:8px 0;padding:0}
+  .list li{list-style:none;position:relative;margin:8px 0;padding-left:24px;font-size:17px;line-height:1.8;}
+  .list li::before{
+    content:"-";
+    position:absolute;left:0;top:0;font-weight:700;
+  }
+  .sublist{margin:6px 0 0 0}
+  .sublist li{padding-left:20px;font-size:16px;}
+  .sublist li::before{content:">";color:#7B8DA0}
+
+  /* 結論框 */
+  .conclusion{
+    margin-top:14px;padding:16px 18px;border:1px dashed #D9DEE7;border-radius:12px;background:#FFFDF6;
+    font-size:17px;line-height:1.8;
+  }
+  .conclusion strong{font-weight:800;}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .tag{font-size:14px;color:var(--tag);border:1px solid var(--border);padding:5px 10px;border-radius:999px;background:#FFF}
+
+  /* 優缺點雙欄 */
+  .two-col{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin:16px 0;
+  }
+  .col-box{
+    padding:16px;
+    border-radius:12px;
+    font-size:16px;
+    line-height:1.8;
+  }
+  .col-box h4{
+    margin:0 0 10px;
+    font-size:18px;
+    font-weight:800;
+  }
+  .col-box ul{margin:0;padding:0;}
+  .col-box li{
+    list-style:none;
+    position:relative;
+    padding-left:22px;
+    margin:6px 0;
+  }
+  .col-good{background:#F0FFF8;border:1px solid #C3F5E0;}
+  .col-good h4{color:#00B894;}
+  .col-good li::before{content:"✓";position:absolute;left:0;color:#00B894;font-weight:700;}
+  .col-bad{background:#FFF0F0;border:1px solid #FECDD2;}
+  .col-bad h4{color:#E17055;}
+  .col-bad li::before{content:"✗";position:absolute;left:0;color:#E17055;font-weight:700;}
+
+  /* 改善步驟 */
+  .steps{margin:12px 0;padding:0;counter-reset:step;}
+  .steps li{
+    list-style:none;
+    position:relative;
+    padding-left:40px;
+    margin:14px 0;
+    font-size:17px;
+    line-height:1.8;
+    counter-increment:step;
+  }
+  .steps li::before{
+    content:counter(step);
+    position:absolute;left:0;top:2px;
+    width:28px;height:28px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:14px;color:#fff;
+    background:var(--c, #636E72);
+  }
+  .step-title{font-weight:700;display:block;margin-bottom:2px;}
+  .step-detail{color:var(--sub);font-size:15px;}
+
+  /* 金句 */
+  .quote-box{
+    text-align:center;
+    padding:20px;
+    margin-top:16px;
+    font-size:19px;
+    font-weight:700;
+    font-style:italic;
+    line-height:1.7;
+    border-radius:12px;
+  }
+
+  /* 總覽卡特殊 */
+  .overview-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin:16px 0;
+  }
+  .overview-item{
+    padding:18px;
+    border-radius:14px;
+    text-align:center;
+  }
+  .overview-item .ov-emoji{font-size:40px;margin-bottom:6px;}
+  .overview-item .ov-name{font-size:20px;font-weight:800;margin-bottom:4px;}
+  .overview-item .ov-desc{font-size:15px;line-height:1.6;}
+
+  /* 頁尾 */
+  .footer{
+    text-align:center;
+    padding:14px;
+    font-size:14px;
+    color:var(--tag);
+    border-top:1px dashed var(--border);
+  }
+
+  @media(max-width:520px){
+    .canvas{padding:14px;}
+    .page-title h1{font-size:26px;}
+    .card-title{font-size:23px;}
+    .section h3{font-size:19px;}
+    .two-col{grid-template-columns:1fr;}
+    .overview-grid{grid-template-columns:1fr;}
+    .header{padding:22px 20px 12px;}
+    .body{padding:18px 18px 24px;}
+    .quote-box{font-size:17px;}
+  }
+</style>
+</head>
+<body>
+<main class="canvas">
+
+  <div class="page-title">
+    <h1>🎤 上台緊張四大類型</h1>
+    <p>健言社教學用｜完整解析 × 優缺點 × 改善策略</p>
+  </div>
+
+  <!-- ═══════════ 卡 1：腦袋當機型 ═══════════ -->
+  <article class="card">
+    <header class="header" style="background:linear-gradient(90deg, rgba(108,92,231,.12), rgba(162,155,254,.12));">
+      <span class="badge" style="background:var(--type-a);">🧠 類型 A</span>
+      <div class="card-title">腦袋當機型</div>
+      <div class="card-subtitle">「我最怕的不是觀眾，是自己的大腦突然關機。」</div>
+    </header>
+    <div class="body">
+
+      <section class="section" style="border-left-color:var(--type-a);">
+        <h3>🔍 核心特徵</h3>
+        <ul class="list">
+          <li>緊張的根源來自<strong>「害怕失控」</strong>——怕忘詞、怕卡住、怕腦袋一片空白。</li>
+          <li>習慣用「想」來應對壓力，但越想越焦慮，反而更容易當機。</li>
+          <li>上台前會不斷預演「最壞情況」，內心小劇場超級豐富。</li>
+          <li>即席演講是最大的噩夢，因為沒有時間準備 = 沒有安全感。</li>
+        </ul>
+      </section>
+
+      <section class="section alt">
+        <h3>📋 典型行為</h3>
+        <ul class="list">
+          <li>備稿演講一定寫逐字稿，而且要背到滾瓜爛熟才敢上台。</li>
+          <li>上台前 10 分鐘還在反覆默念，嘴巴停不下來。</li>
+          <li>站上台的瞬間，精心準備的開場詞突然全部消失。</li>
+          <li>忘詞時會整個人僵住，越慌越想不起來，陷入惡性循環。</li>
+          <li>當主席或主持人時，最怕記錯流程順序，搞混介紹順序。</li>
+        </ul>
+      </section>
+
+      <div class="two-col">
+        <div class="col-box col-good">
+          <h4>優點</h4>
+          <ul>
+            <li>準備充分，內容通常有深度</li>
+            <li>邏輯思考能力強</li>
+            <li>對演講內容有高度掌握</li>
+            <li>一旦進入狀態，表現穩定</li>
+            <li>適合需要精準表達的場合</li>
+          </ul>
+        </div>
+        <div class="col-box col-bad">
+          <h4>弱點</h4>
+          <ul>
+            <li>過度依賴講稿，缺乏彈性</li>
+            <li>忘詞時容易全面崩潰</li>
+            <li>即興反應能力較弱</li>
+            <li>準備時間成本極高</li>
+            <li>容易給人「背稿感」，不自然</li>
+          </ul>
+        </div>
+      </div>
+
+      <section class="section alt2">
+        <h3>🛠️ 改善策略</h3>
+        <ol class="steps">
+          <li style="--c:var(--type-a);">
+            <span class="step-title">丟掉逐字稿，改用關鍵字地圖</span>
+            <span class="step-detail">一張 A4 紙，只寫 3-5 個關鍵詞串起邏輯。練習「看到關鍵字就能展開」的能力，取代背誦。</span>
+          </li>
+          <li style="--c:var(--type-a);">
+            <span class="step-title">練習「萬用架構」應對即席演講</span>
+            <span class="step-detail">例如 PREP 法（觀點→理由→例子→結論）。有架構就不怕空白，腦袋有軌道可以跑。</span>
+          </li>
+          <li style="--c:var(--type-a);">
+            <span class="step-title">刻意練習「忘詞接話」</span>
+            <span class="step-detail">在社團練習時故意停下來，訓練即興接話。忘詞不是災難，是練習臨場反應的機會。</span>
+          </li>
+          <li style="--c:var(--type-a);">
+            <span class="step-title">上台前做「腦袋重開機」呼吸</span>
+            <span class="step-detail">閉眼慢呼吸 2 分鐘，把注意力從腦袋移到身體。大腦越放鬆，記憶力越好。</span>
+          </li>
+          <li style="--c:var(--type-a);">
+            <span class="step-title">允許自己看提示</span>
+            <span class="step-detail">當主席或主持人時，把流程表貼在講台上。看提示不丟臉，專業講者都這麼做。</span>
+          </li>
+        </ol>
+      </section>
+
+      <div class="quote-box" style="background:var(--type-a-light);color:var(--type-a);">
+        「你不需要完美的記憶，你需要的是放鬆的大腦。<br>觀眾不知道你原本要講什麼，所以你不可能『講錯』。」
+      </div>
+
+      <div class="conclusion">
+        <strong>給腦袋當機型的一句話：</strong>演講不是背書考試。你要練的不是「記得更牢」，而是「忘了也能繼續講」。當你不再害怕忘詞的那一天，你就自由了。
+        <div class="tags">
+          <span class="tag">關鍵字地圖</span>
+          <span class="tag">PREP 架構</span>
+          <span class="tag">刻意忘詞練習</span>
+          <span class="tag">允許看提示</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer">圖卡 1 / 5 ｜腦袋當機型</div>
+  </article>
+
+  <!-- ═══════════ 卡 2：身體叛變型 ═══════════ -->
+  <article class="card">
+    <header class="header" style="background:linear-gradient(90deg, rgba(255,107,107,.12), rgba(253,121,168,.12));">
+      <span class="badge" style="background:var(--type-b);">💓 類型 B</span>
+      <div class="card-title">身體叛變型</div>
+      <div class="card-subtitle">「我腦袋知道該怎麼做，但身體就是不聽話。」</div>
+    </header>
+    <div class="body">
+
+      <section class="section" style="border-left-color:var(--type-b);">
+        <h3>🔍 核心特徵</h3>
+        <ul class="list">
+          <li>緊張的根源在<strong>「身體的自動反應」</strong>——心跳加速、手抖、冒汗、聲音發抖、腿軟。</li>
+          <li>大腦其實清楚要講什麼，但身體率先進入「戰鬥或逃跑」模式。</li>
+          <li>越想控制身體反應，身體越失控，形成惡性循環。</li>
+          <li>不管是備稿、即席、主持都會發作，因為觸發點是「站在眾人面前」這件事本身。</li>
+        </ul>
+      </section>
+
+      <section class="section alt">
+        <h3>📋 典型行為</h3>
+        <ul class="list">
+          <li>上台前頻繁跑廁所、喝水、坐立不安。</li>
+          <li>拿麥克風的手明顯在抖，自己和觀眾都看得出來。</li>
+          <li>聲音從開場就在發抖，有時候到中段才慢慢穩下來。</li>
+          <li>結束後全身的緊繃感才慢慢消退，像跑完馬拉松一樣累。</li>
+          <li>比賽前一晚可能失眠或腸胃不適，身體提前「預警」。</li>
+        </ul>
+      </section>
+
+      <div class="two-col">
+        <div class="col-box col-good">
+          <h4>優點</h4>
+          <ul>
+            <li>腦袋清楚，內容邏輯通常沒問題</li>
+            <li>身體反應代表你很在乎表現</li>
+            <li>一旦身體穩定，後半段通常很好</li>
+            <li>有強烈的腎上腺素，可轉化為能量</li>
+            <li>經驗累積後，身體會逐漸適應</li>
+          </ul>
+        </div>
+        <div class="col-box col-bad">
+          <h4>弱點</h4>
+          <ul>
+            <li>開場表現常受影響，第一印象打折</li>
+            <li>觀眾可能感受到你的緊張</li>
+            <li>注意力被身體感受分散</li>
+            <li>容易逃避上台機會</li>
+            <li>身體反應難以單靠意志力控制</li>
+          </ul>
+        </div>
+      </div>
+
+      <section class="section alt2">
+        <h3>🛠️ 改善策略</h3>
+        <ol class="steps">
+          <li style="--c:var(--type-b);">
+            <span class="step-title">學會「方塊呼吸法」</span>
+            <span class="step-detail">吸氣 4 秒 → 憋氣 4 秒 → 吐氣 4 秒 → 停 4 秒。上台前做 3 輪，直接啟動副交感神經，讓身體從「戰鬥模式」切換到「穩定模式」。</span>
+          </li>
+          <li style="--c:var(--type-b);">
+            <span class="step-title">做「漸進式肌肉放鬆」</span>
+            <span class="step-detail">從腳趾到肩膀，每個部位先用力緊繃 5 秒，再完全放鬆。上台前在座位上偷偷做，觀眾看不出來。</span>
+          </li>
+          <li style="--c:var(--type-b);">
+            <span class="step-title">給身體找到支撐點</span>
+            <span class="step-detail">手抖就大方握住麥克風或扶著講台。腿軟就站穩雙腳與肩同寬。身體有支撐，抖動感會大幅降低。</span>
+          </li>
+          <li style="--c:var(--type-b);">
+            <span class="step-title">提早到場「預適應」</span>
+            <span class="step-detail">提早到例會場地走一走講台、站一站台上的位置。讓身體在沒有壓力的情況下先熟悉環境，降低陌生觸發的緊張。</span>
+          </li>
+          <li style="--c:var(--type-b);">
+            <span class="step-title">重新定義身體反應</span>
+            <span class="step-detail">心跳加速不是「我要完蛋了」，而是「我的身體正在幫我充電」。同樣的生理反應，換個解讀，感受就不同。</span>
+          </li>
+        </ol>
+      </section>
+
+      <div class="quote-box" style="background:var(--type-b-light);color:var(--type-b);">
+        「你的身體不是在跟你作對，<br>它只是用力過猛地保護你。<br>學會跟它合作，它會變成你最大的武器。」
+      </div>
+
+      <div class="conclusion">
+        <strong>給身體叛變型的一句話：</strong>你的問題不在內容、不在能力，純粹是身體的「自動駕駛」太靈敏。好消息是，身體反應是所有類型中最容易透過「技巧」改善的。呼吸、放鬆、支撐——三招就能讓你穩下來。
+        <div class="tags">
+          <span class="tag">方塊呼吸法</span>
+          <span class="tag">肌肉放鬆</span>
+          <span class="tag">身體支撐點</span>
+          <span class="tag">環境預適應</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer">圖卡 2 / 5 ｜身體叛變型</div>
+  </article>
+
+  <!-- ═══════════ 卡 3：在意眼光型 ═══════════ -->
+  <article class="card">
+    <header class="header" style="background:linear-gradient(90deg, rgba(0,184,148,.12), rgba(85,239,196,.12));">
+      <span class="badge" style="background:var(--type-c);">👀 類型 C</span>
+      <div class="card-title">在意眼光型</div>
+      <div class="card-subtitle">「台下每一張臉，都像一面放大我缺點的鏡子。」</div>
+    </header>
+    <div class="body">
+
+      <section class="section" style="border-left-color:var(--type-c);">
+        <h3>🔍 核心特徵</h3>
+        <ul class="list">
+          <li>緊張的根源是<strong>「怕被評價」</strong>——不是怕內容不好，而是怕別人覺得自己不好。</li>
+          <li>評審的每一個表情、社友的每一次低頭，都會被解讀為「他們覺得我很差」。</li>
+          <li>上台最大的恐懼不是忘詞，而是「丟臉」和「出糗」。</li>
+          <li>演講比賽後最在意的不是自己講了什麼，而是排名和別人的評語。</li>
+        </ul>
+      </section>
+
+      <section class="section alt">
+        <h3>📋 典型行為</h3>
+        <ul class="list">
+          <li>上台時不敢看觀眾的眼睛，只盯著螢幕、牆壁或地板。</li>
+          <li>演講前會偷看其他參賽者，覺得每一個人都比自己厲害。</li>
+          <li>台上發現有人滑手機或交頭接耳，就覺得「一定是我講得太爛」。</li>
+          <li>結束後會反覆詢問社友：「你覺得我剛剛講得怎麼樣？」</li>
+          <li>即使拿了好成績，還是會擔心「大家是不是只是客氣」。</li>
+        </ul>
+      </section>
+
+      <div class="two-col">
+        <div class="col-box col-good">
+          <h4>優點</h4>
+          <ul>
+            <li>高度同理心，能感受觀眾的反應</li>
+            <li>很在乎聽眾感受，內容常有溫度</li>
+            <li>願意接受回饋，進步空間大</li>
+            <li>人際敏感度高，適合感性主題</li>
+            <li>真誠的態度容易打動觀眾</li>
+          </ul>
+        </div>
+        <div class="col-box col-bad">
+          <h4>弱點</h4>
+          <ul>
+            <li>過度解讀觀眾反應，影響發揮</li>
+            <li>迴避眼神交流，降低感染力</li>
+            <li>容易被負面回饋擊潰信心</li>
+            <li>可能因怕丟臉而拒絕上台</li>
+            <li>自我價值過度綁定在他人評價上</li>
+          </ul>
+        </div>
+      </div>
+
+      <section class="section alt2">
+        <h3>🛠️ 改善策略</h3>
+        <ol class="steps">
+          <li style="--c:var(--type-c);">
+            <span class="step-title">找到你的「友善觀眾」</span>
+            <span class="step-detail">上台前先在社友中找到 2-3 個對你點頭微笑的人，演講時只跟他們做眼神交流。這會給你「我被支持著」的安全感。</span>
+          </li>
+          <li style="--c:var(--type-c);">
+            <span class="step-title">把「被評價」轉換成「分享」</span>
+            <span class="step-detail">你不是站在法庭上被審判，你是在朋友圈裡分享一件有趣的事。改變框架，壓力就會降低。</span>
+          </li>
+          <li style="--c:var(--type-c);">
+            <span class="step-title">認識「聚光燈效應」</span>
+            <span class="step-detail">心理學研究證實：你覺得全場都在盯著你的缺點，但其實大家都在想自己等等要講什麼。你沒有你以為的那麼「被注意」。</span>
+          </li>
+          <li style="--c:var(--type-c);">
+            <span class="step-title">設定「唯一評量標準」</span>
+            <span class="step-detail">每次上台後只問自己一個問題：「我有把想說的說出來嗎？」有，就是成功。排名和評語是別人的事，不是你的KPI。</span>
+          </li>
+          <li style="--c:var(--type-c);">
+            <span class="step-title">練習「不完美也沒關係」</span>
+            <span class="step-detail">刻意在社團的安全環境中做一次「不準備的上台」。你會發現：就算講得不完美，天也沒有塌下來，而且社友其實很溫暖。</span>
+          </li>
+        </ol>
+      </section>
+
+      <div class="quote-box" style="background:var(--type-c-light);color:var(--type-c);">
+        「觀眾不是你的評審，他們是你的客人。<br>你是主人，你在分享，他們在接受你的款待。」
+      </div>
+
+      <div class="conclusion">
+        <strong>給在意眼光型的一句話：</strong>你的敏感是天賦，不是弱點。問題不在於你在意別人，而在於你只聽見了想像中的批評，卻忽略了真實的掌聲。學會把「觀眾的目光」從威脅轉換成支持，你的敏感就會變成你最大的魅力。
+        <div class="tags">
+          <span class="tag">友善觀眾</span>
+          <span class="tag">聚光燈效應</span>
+          <span class="tag">分享心態</span>
+          <span class="tag">唯一評量標準</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer">圖卡 3 / 5 ｜在意眼光型</div>
+  </article>
+
+  <!-- ═══════════ 卡 4：永遠不滿型 ═══════════ -->
+  <article class="card">
+    <header class="header" style="background:linear-gradient(90deg, rgba(253,203,110,.15), rgba(225,112,85,.12));">
+      <span class="badge" style="background:var(--type-d);">🎯 類型 D</span>
+      <div class="card-title">永遠不滿型</div>
+      <div class="card-subtitle">「不是怕上台，是怕自己表現得不夠好。」</div>
+    </header>
+    <div class="body">
+
+      <section class="section" style="border-left-color:var(--type-d);">
+        <h3>🔍 核心特徵</h3>
+        <ul class="list">
+          <li>緊張的根源是<strong>「對自己的高標準」</strong>——永遠覺得還可以更好，永遠覺得準備不夠。</li>
+          <li>不是害怕上台本身，而是害怕「表現不到位」，對不起自己花的準備時間。</li>
+          <li>是健言社裡最認真準備的人，講稿改了又改，主持稿寫了五個版本。</li>
+          <li>即使拿了好成績，回家後只會想「那一段如果再改一下就更好了」。</li>
+        </ul>
+      </section>
+
+      <section class="section alt">
+        <h3>📋 典型行為</h3>
+        <ul class="list">
+          <li>講稿不斷修改，交稿前一刻還在改，有時候改到比原版更差。</li>
+          <li>上台前覺得「還沒準備好」，但其實已經準備得比大多數人好太多。</li>
+          <li>演講開場第一句就覺得語調不對，很想重來。</li>
+          <li>結束後腦中不斷回放「可以更好的地方」，把 80 分的表現解讀為不及格。</li>
+          <li>對別人很寬容，對自己特別嚴格。社友講得普通會鼓勵，自己講得普通會自責。</li>
+        </ul>
+      </section>
+
+      <div class="two-col">
+        <div class="col-box col-good">
+          <h4>優點</h4>
+          <ul>
+            <li>準備度極高，內容品質優秀</li>
+            <li>對自己要求高，持續進步快</li>
+            <li>很能接受建設性回饋並改善</li>
+            <li>不容易怠惰，驅動力強</li>
+            <li>長期下來累積的實力最紮實</li>
+          </ul>
+        </div>
+        <div class="col-box col-bad">
+          <h4>弱點</h4>
+          <ul>
+            <li>過度準備導致身心俱疲</li>
+            <li>永遠不滿意，缺乏成就感</li>
+            <li>可能因為「還沒準備好」拖延上台</li>
+            <li>講台上容易僵硬，因為怕偏離計畫</li>
+            <li>容易燃燒殆盡（burnout）</li>
+          </ul>
+        </div>
+      </div>
+
+      <section class="section alt2">
+        <h3>🛠️ 改善策略</h3>
+        <ol class="steps">
+          <li style="--c:var(--type-d);">
+            <span class="step-title">設定「夠好就上」的標準線</span>
+            <span class="step-detail">上台前告訴自己：準備到 70 分就上台，剩下的 30 分靠臨場發揮。不是降低標準，是把空間留給現場的靈感和互動。</span>
+          </li>
+          <li style="--c:var(--type-d);">
+            <span class="step-title">練習「一次過」</span>
+            <span class="step-detail">在家錄一次演練影片，不管好壞直接看完。不重錄、不修改。訓練自己接受「夠好的不完美」。</span>
+          </li>
+          <li style="--c:var(--type-d);">
+            <span class="step-title">焦點從「我的表現」→「社友的收穫」</span>
+            <span class="step-detail">社友只要從你的演講中帶走一個啟發、一個故事、一個笑容，你這次上台就是成功的。他們不需要你完美。</span>
+          </li>
+          <li style="--c:var(--type-d);">
+            <span class="step-title">建立「3:1 回顧法」</span>
+            <span class="step-detail">每次下台後，先寫 3 個「我做得好的地方」，再寫 1 個「下次可以微調的」。強迫自己先看見好的。</span>
+          </li>
+          <li style="--c:var(--type-d);">
+            <span class="step-title">記住：流程順 > 內容完美</span>
+            <span class="step-detail">當主席或主持人時，流程順暢、氣氛好，比致詞完美重要一百倍。沒有人會記得你用了什麼修辭，但大家會記得那場活動辦得很好。</span>
+          </li>
+        </ol>
+      </section>
+
+      <div class="quote-box" style="background:var(--type-d-light);color:var(--type-d);">
+        「完美不是目標，連結才是。<br>社友記住的是你的真誠，不是你的完美。<br>80 分加上笑容，永遠勝過 100 分配上緊繃。」
+      </div>
+
+      <div class="conclusion">
+        <strong>給永遠不滿型的一句話：</strong>你是社團裡最努力的人，但你的敵人不是能力不足，而是對自己太嚴格。你已經夠好了——不是客氣話，是事實。學會在 70 分的時候就放手上台，你會發現臨場的自己，比背稿的自己更有魅力。
+        <div class="tags">
+          <span class="tag">70 分就上台</span>
+          <span class="tag">一次過練習</span>
+          <span class="tag">3:1 回顧法</span>
+          <span class="tag">流程優先</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer">圖卡 4 / 5 ｜永遠不滿型</div>
+  </article>
+
+  <!-- ═══════════ 卡 5：總覽導航卡 ═══════════ -->
+  <article class="card">
+    <header class="header" style="background:linear-gradient(90deg, rgba(157,214,223,.2), rgba(247,207,227,.2));">
+      <span class="badge" style="background:#636E72;">📋 總覽</span>
+      <div class="card-title">四大類型速查表</div>
+      <div class="card-subtitle">快速對照，找到你的緊張模式與改善入口</div>
+    </header>
+    <div class="body">
+
+      <div class="overview-grid">
+        <div class="overview-item" style="background:var(--type-a-light);border:2px solid rgba(108,92,231,.2);border-radius:14px;">
+          <div class="ov-emoji">🧠</div>
+          <div class="ov-name" style="color:var(--type-a);">腦袋當機型</div>
+          <div class="ov-desc">怕忘詞、怕空白<br><strong>核心解方：</strong>關鍵字地圖<br>+ 萬用架構</div>
+        </div>
+        <div class="overview-item" style="background:var(--type-b-light);border:2px solid rgba(255,107,107,.2);border-radius:14px;">
+          <div class="ov-emoji">💓</div>
+          <div class="ov-name" style="color:var(--type-b);">身體叛變型</div>
+          <div class="ov-desc">手抖、心跳、冒汗<br><strong>核心解方：</strong>方塊呼吸法<br>+ 身體支撐點</div>
+        </div>
+        <div class="overview-item" style="background:var(--type-c-light);border:2px solid rgba(0,184,148,.2);border-radius:14px;">
+          <div class="ov-emoji">👀</div>
+          <div class="ov-name" style="color:var(--type-c);">在意眼光型</div>
+          <div class="ov-desc">怕被評價、怕丟臉<br><strong>核心解方：</strong>分享心態<br>+ 友善觀眾</div>
+        </div>
+        <div class="overview-item" style="background:var(--type-d-light);border:2px solid rgba(225,112,85,.2);border-radius:14px;">
+          <div class="ov-emoji">🎯</div>
+          <div class="ov-name" style="color:var(--type-d);">永遠不滿型</div>
+          <div class="ov-desc">怕不夠好、怕不完美<br><strong>核心解方：</strong>70 分就上台<br>+ 3:1 回顧法</div>
+        </div>
+      </div>
+
+      <section class="section">
+        <h3>🔑 不管你是哪一型，都要記住的三件事</h3>
+        <ul class="list">
+          <li><strong>緊張不是敵人，是能量。</strong>所有頂尖講者都會緊張，差別在於他們學會了「管理」緊張，而不是「消除」緊張。</li>
+          <li><strong>大部分人是混合型。</strong>你可能主要是 A 型，但同時帶有一點 C 型。知道自己的主要類型，針對性練習效率最高。</li>
+          <li><strong>每上台一次就進步一次。</strong>沒有人是靠「想」變好的，只有靠「做」。健言社就是你最安全的練習場，放心去試。</li>
+        </ul>
+      </section>
+
+      <section class="section alt">
+        <h3>🗺️ 改善路徑建議</h3>
+        <ul class="list">
+          <li><strong>初學者（剛入社）：</strong>先找出自己的主要類型 → 用一個最簡單的技巧開始練（如呼吸法、關鍵字地圖）→ 每次例會至少上台一次。</li>
+          <li><strong>有經驗者（社齡半年以上）：</strong>挑戰自己的弱項類型 → 嘗試即席演講和主持角色 → 練習在不同情境中都能穩定。</li>
+          <li><strong>資深社友：</strong>幫助新社友辨識他們的類型 → 擔任導生（mentor）→ 用自己的經驗鼓勵別人，教學相長。</li>
+        </ul>
+      </section>
+
+      <div class="conclusion">
+        <strong>最後一句話：</strong>你願意站上講台，就已經贏了 90% 的人。剩下的 10%，我們在健言社一起練。
+        <div class="tags">
+          <span class="tag">緊張是能量</span>
+          <span class="tag">針對性練習</span>
+          <span class="tag">安全練習場</span>
+          <span class="tag">每次進步一點</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer">圖卡 5 / 5 ｜總覽導航卡｜健言社教學用</div>
+  </article>
+
+</main>
+</body>
+</html>
