@@ -59,6 +59,23 @@
     margin-bottom: 16px;
   }
 
+  .rule-badge {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 2px 10px;
+    background: var(--paper);
+    color: var(--ink);
+    border: 1.5px solid var(--paper);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+
+  .rule-badge.active {
+    background: var(--accent);
+    color: var(--paper);
+    border-color: var(--accent);
+  }
+
   h1 {
     font-family: 'Noto Serif TC', serif;
     font-weight: 900;
@@ -193,6 +210,108 @@
     cursor: pointer;
   }
 
+  .willingness-group {
+    background: linear-gradient(135deg, #f5e8d0 0%, #f0dec0 100%);
+    border: 1.5px solid var(--ink);
+    padding: 14px 16px;
+    margin: 8px -4px 0 -4px;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+
+  .willingness-group .control-label .name::before {
+    content: '★ ';
+    color: var(--accent);
+  }
+
+  .willingness-group .description {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* Rule toggle */
+  .rule-body {
+    padding: 20px 24px;
+  }
+
+  .rule-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+
+  .rule-info {
+    flex: 1;
+  }
+
+  .rule-name {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 3px;
+  }
+
+  .rule-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 56px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+
+  .toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .toggle-slider {
+    position: absolute;
+    inset: 0;
+    background: var(--paper-dark);
+    border: 2px solid var(--ink);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .toggle-slider::before {
+    content: '';
+    position: absolute;
+    left: 1px;
+    top: 1px;
+    width: 20px;
+    height: 20px;
+    background: var(--paper);
+    border: 1.5px solid var(--ink);
+    transition: transform 0.2s;
+  }
+
+  .toggle-switch input:checked + .toggle-slider {
+    background: var(--accent);
+  }
+
+  .toggle-switch input:checked + .toggle-slider::before {
+    transform: translateX(26px);
+  }
+
+  .rule-conditional {
+    margin-top: 12px;
+    padding: 12px 14px;
+    background: var(--paper-dark);
+    border: 1.5px dashed var(--ink);
+  }
+
+  .rule-conditional .control-label .name {
+    font-size: 13px;
+  }
+
   .description {
     font-size: 11px;
     color: var(--muted);
@@ -276,6 +395,98 @@
   }
 
   .result-stat .num .accent-text { color: var(--accent-soft); }
+
+  .result-rule-tag {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 2px 8px;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .result-rule-tag.active {
+    background: var(--accent);
+    color: var(--paper);
+  }
+
+  .rule-compare {
+    margin-top: 20px;
+    padding: 16px 18px;
+    background: rgba(244, 241, 232, 0.08);
+    border: 1.5px dashed var(--gold);
+  }
+
+  .rule-compare-title {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--gold);
+    margin-bottom: 14px;
+    letter-spacing: 0.05em;
+  }
+
+  .rule-compare-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .rc-item {
+    text-align: center;
+  }
+
+  .rc-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--paper-dark);
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+
+  .rc-values {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 6px;
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+
+  .rc-old {
+    color: var(--paper-dark);
+    text-decoration: line-through;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    opacity: 0.7;
+  }
+
+  .rc-arrow {
+    color: var(--gold);
+    font-size: 14px;
+  }
+
+  .rc-new {
+    color: var(--paper);
+    font-size: 22px;
+  }
+
+  .rc-delta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .rc-delta.positive { color: #8fdbb0; }
+  .rc-delta.negative { color: #ff8b7c; }
+
+  @media (max-width: 720px) {
+    .rule-compare-grid { grid-template-columns: 1fr; gap: 10px; }
+  }
 
   /* Probability bar */
   .prob-section {
@@ -393,6 +604,7 @@
 
   .term-block.new { background: var(--paper-dark); }
   .term-block.member { background: #e8d9c5; }
+  .term-block.deputy { background: #b8d4d2; }
   .term-block.leader { background: var(--gold); color: var(--paper); }
   .term-block.vp { background: var(--teal); color: var(--paper); }
   .term-block.eligible {
@@ -545,6 +757,7 @@
 
   .swatch-new { background: var(--paper-dark); }
   .swatch-member { background: #e8d9c5; }
+  .swatch-deputy { background: #b8d4d2; }
   .swatch-leader { background: var(--gold); }
   .swatch-vp { background: var(--teal); }
   .swatch-eligible { background: var(--accent); }
@@ -1047,6 +1260,18 @@
     box-shadow: 3px 3px 0 var(--ink);
   }
 
+  .solution-card.highlight {
+    background: linear-gradient(135deg, #f5e8d0 0%, #ebd9b8 100%);
+    box-shadow: 3px 3px 0 var(--accent);
+    border-color: var(--accent);
+  }
+
+  .solution-card.highlight .sol-label {
+    background: var(--accent);
+    color: var(--paper);
+    border-color: var(--accent);
+  }
+
   .sol-label {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
@@ -1090,7 +1315,7 @@
 
   <header>
     <div class="stamp">第 86 期</div>
-    <div class="header-tag">JIANYAN · TOASTMASTERS · CALCULATOR</div>
+    <div class="header-tag">JIANYAN · TOASTMASTERS · CALCULATOR <span id="rule-badge" class="rule-badge">原規則</span></div>
     <h1>中壢健言社<br><span class="accent">社長養成路徑</span> 動態試算</h1>
     <p class="subtitle">
       依資格規則「連續 3 期 + 2 次組長以上」,推算新社友取得社長資格所需時間。<br>
@@ -1103,6 +1328,34 @@
     <!-- 左：控制面板 -->
     <div>
       <div class="panel">
+        <div class="panel-header">
+          <span>RULE TOGGLE · 規則切換</span>
+          <span>00</span>
+        </div>
+        <div class="rule-body">
+          <div class="rule-row">
+            <div class="rule-info">
+              <div class="rule-name">副組長也算資格</div>
+              <div class="rule-desc">啟用後:「1 次組長 + 1 次副組長」也滿足條件</div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="rule-deputy">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="control-group rule-conditional" id="deputy-controls" style="display:none;">
+            <div class="control-label">
+              <span class="name">副組長被指派機率</span>
+              <span class="value"><span id="v-deputy">50</span>%</span>
+            </div>
+            <input type="range" id="deputy-prob" min="10" max="90" value="50" step="5">
+            <div class="description">每組長挑 3-4 個副組長 → 約 25 個名額/期 → 28% 的社友是副組長</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top: 20px;">
         <div class="panel-header">
           <span>PARAMETERS · 參數設定</span>
           <span>01</span>
@@ -1172,17 +1425,28 @@
             <div class="description">已當過至少 1 次組長且為資深社友時,被選為副社長的機率(副社長算組長以上資歷)</div>
           </div>
 
+          <div class="control-group willingness-group">
+            <div class="control-label">
+              <span class="name">具資格者願意當社長的比例</span>
+              <span class="value"><span id="v-willingness">40</span>%</span>
+            </div>
+            <input type="range" id="willingness" min="10" max="100" value="40" step="5">
+            <div class="description">10 位有資格者中,約 4 位真的願意擔任社長(其餘 6 位推辭)</div>
+          </div>
+
         </div>
       </div>
 
       <div class="notes">
         <div class="notes-title">資格規則 / Rule Set</div>
         <strong>① 連續參加 3 期</strong>(1.5 年起跳)<br>
-        <strong>② 累計擔任過 2 次組長以上</strong>(副社長也算)<br>
-        <strong>③ 組長/副社長由社長指定</strong>,非選舉產生<br>
-        <strong>④ 第一期一定是新人</strong>,不能當組長<br>
+        <strong>② 累計擔任 2 次組長以上</strong>(副社長算入)<br>
+        <strong id="rule-deputy-note" style="display:none; color:var(--accent);">②' 或 1 次組長 + 1 次副組長 [新規則]</strong>
+        <span id="rule-deputy-spacer" style="display:none;"><br></span>
+        <strong>③ 組長/副社長/副組長由社長與組長指派</strong><br>
+        <strong>④ 第一期一定是新人</strong>,不能擔任任何幹部<br>
         <strong>⑤ 每期 9 個培養位</strong>:2 副社長 + 7 組長<br>
-        &nbsp;&nbsp;&nbsp;副社長多為資深社友,7 組長中 4-5 連任 + 2-3 新血
+        &nbsp;&nbsp;&nbsp;<span id="rule-deputy-supply" style="display:none; color:var(--accent);">+ 25 個副組長(7 組長 × 3-4 名)</span>
       </div>
     </div>
 
@@ -1196,7 +1460,7 @@
         </div>
 
         <div class="result-card">
-          <div class="result-label">▎ EXPECTED TIME TO ELIGIBILITY</div>
+          <div class="result-label">▎ EXPECTED TIME TO ELIGIBILITY <span id="rule-tag" class="result-rule-tag">原規則</span></div>
           <div class="result-main">
             <div class="result-number"><span id="r-years">5.0</span><span class="small">年</span></div>
             <div style="color: var(--paper-dark); font-size: 14px;">
@@ -1216,6 +1480,40 @@
             <div class="result-stat">
               <div class="label">SLOWEST · 較慢</div>
               <div class="num"><span id="r-slow">8.0</span> <span class="accent-text" style="font-size:14px;">年</span></div>
+            </div>
+          </div>
+
+          <!-- 規則對比 -->
+          <div class="rule-compare" id="rule-compare" style="display:none;">
+            <div class="rule-compare-title">⚡ 新規則 vs 原規則</div>
+            <div class="rule-compare-grid">
+              <div class="rc-item">
+                <div class="rc-label">達標時間</div>
+                <div class="rc-values">
+                  <span class="rc-old"><span id="rc-time-old">5.0</span>年</span>
+                  <span class="rc-arrow">→</span>
+                  <span class="rc-new"><span id="rc-time-new">4.0</span>年</span>
+                </div>
+                <div class="rc-delta" id="rc-time-delta">-1.0 年</div>
+              </div>
+              <div class="rc-item">
+                <div class="rc-label">每年供給</div>
+                <div class="rc-values">
+                  <span class="rc-old"><span id="rc-supply-old">0.74</span></span>
+                  <span class="rc-arrow">→</span>
+                  <span class="rc-new"><span id="rc-supply-new">0.77</span></span>
+                </div>
+                <div class="rc-delta" id="rc-supply-delta">+0.03 位</div>
+              </div>
+              <div class="rc-item">
+                <div class="rc-label">P90 較慢路徑</div>
+                <div class="rc-values">
+                  <span class="rc-old"><span id="rc-slow-old">8.0</span>年</span>
+                  <span class="rc-arrow">→</span>
+                  <span class="rc-new"><span id="rc-slow-new">6.0</span>年</span>
+                </div>
+                <div class="rc-delta" id="rc-slow-delta">-2.0 年</div>
+              </div>
             </div>
           </div>
         </div>
@@ -1275,7 +1573,7 @@
         </div>
         <div class="funnel-body">
           <div class="funnel-intro">
-            每期 <strong>20 位新人</strong> 進入社團,經過層層篩選後,究竟能產出幾位社長候選人?
+            每期 <strong>20 位新人</strong> 進入社團,經過層層篩選——包含<strong style="color:var(--accent)">最後一道「意願」關卡</strong>——後,究竟能產出幾位「有資格且願意」的社長候選人?
           </div>
 
           <div class="funnel-stages">
@@ -1318,14 +1616,27 @@
 
             <div class="funnel-arrow">↓ 達成資格機率</div>
 
-            <div class="funnel-stage final">
+            <div class="funnel-stage">
               <div class="stage-num">04</div>
               <div class="stage-bar">
-                <div class="stage-bar-fill final-fill" id="funnel-bar-4"></div>
+                <div class="stage-bar-fill" id="funnel-bar-4"></div>
               </div>
               <div class="stage-info">
                 <div class="stage-label">取得社長資格</div>
-                <div class="stage-count accent-color"><span id="funnel-n4">0.85</span> 人</div>
+                <div class="stage-count"><span id="funnel-n4">0.92</span> 人</div>
+              </div>
+            </div>
+
+            <div class="funnel-arrow">↓ 意願率 <span id="funnel-willing-pct">40</span>%</div>
+
+            <div class="funnel-stage final">
+              <div class="stage-num">05</div>
+              <div class="stage-bar">
+                <div class="stage-bar-fill final-fill" id="funnel-bar-5"></div>
+              </div>
+              <div class="stage-info">
+                <div class="stage-label">★ 有意願擔任社長</div>
+                <div class="stage-count accent-color"><span id="funnel-n5">0.37</span> 人</div>
               </div>
             </div>
           </div>
@@ -1371,7 +1682,8 @@
           <div class="balance-intro">
             <strong>關鍵限制:</strong>社長當選後便<u>不再列入候選池</u>,等於這位人選「用過就沒了」。
             一年兩期 = 一年要消耗 <strong style="color:var(--accent)">2 位</strong> 社長人選。
-            我們的人才漏斗,真的供得起這個消耗速度嗎?
+            而真實供給端還要打折——<strong style="color:var(--accent)">具備資格 ≠ 有意願承擔</strong>,
+            預設 10 位有資格者只有 4 位真的願意當社長。
           </div>
 
           <!-- 供需對比 -->
@@ -1443,6 +1755,11 @@
                 <div class="sol-value">第一期留存率需達<br><strong id="sol-retain">27</strong> %</div>
                 <div class="sol-note">目前 <span id="sol-retain-now">25</span>%,+<span id="sol-retain-delta">2</span> 個百分點</div>
               </div>
+              <div class="solution-card highlight">
+                <div class="sol-label">方案 D · 提升意願 ★</div>
+                <div class="sol-value">意願率需達<br><strong id="sol-willingness">100</strong> %</div>
+                <div class="sol-note">目前 <span id="sol-willingness-now">40</span>%,+<span id="sol-willingness-delta">60</span> 個百分點</div>
+              </div>
               <div class="solution-card">
                 <div class="sol-label">方案 C · 拉長任期</div>
                 <div class="sol-value">社長改為<br><strong>1 年制</strong></div>
@@ -1463,6 +1780,7 @@
           <div class="legend">
             <div class="legend-item"><div class="legend-swatch swatch-new"></div>新人(無資格)</div>
             <div class="legend-item"><div class="legend-swatch swatch-member"></div>一般社友</div>
+            <div class="legend-item"><div class="legend-swatch swatch-deputy"></div>副組長</div>
             <div class="legend-item"><div class="legend-swatch swatch-leader"></div>組長</div>
             <div class="legend-item"><div class="legend-swatch swatch-vp"></div>副社長</div>
             <div class="legend-item"><div class="legend-swatch swatch-eligible"></div>取得社長資格</div>
@@ -1521,58 +1839,60 @@
 // ============ 模擬邏輯 ============
 function simulate(params, runs = 5000) {
   const results = [];
-  const pathStats = { leaderOnly: 0, vpInvolved: 0 };
 
   for (let i = 0; i < runs; i++) {
     let consecutive = 1;            // 連續期數 (第一期已算)
-    let qualifyCount = 0;            // 累計擔任組長/副社長次數
-    let lastRole = 'new';            // 'new' | 'member' | 'leader' | 'vp'
-    let hadVP = false;
+    let leaderCount = 0;             // 組長/副社長次數
+    let deputyCount = 0;             // 副組長次數
+    let lastRole = 'new';            // 'new' | 'member' | 'leader' | 'vp' | 'deputy'
     let eligible = false;
 
-    // 模擬最多 40 期 (20 年)
     for (let term = 2; term <= 40; term++) {
       consecutive++;
 
       // 判定這一期角色
       let role;
-      const isSenior = (term >= 4 && qualifyCount >= 1);  // 資深判定:第 4 期且有當過組長
+      const isSenior = (term >= 4 && leaderCount >= 1);
 
+      // 優先判斷組長/副社長
       if (lastRole === 'leader' || lastRole === 'vp') {
-        // 上期是組長/副社長 → 高機率續任(可能升副社長)
-        if (isSenior && Math.random() < params.prob4) {
-          role = 'vp';  // 資深者升副社長
-        } else if (Math.random() < params.prob2) {
-          role = 'leader';  // 續任組長
-        } else {
-          role = 'member';
-        }
+        if (isSenior && Math.random() < params.prob4) role = 'vp';
+        else if (Math.random() < params.prob2) role = 'leader';
+        else role = null;  // 待判斷副組長
       } else {
-        // 上期沒當 → 用一般機率
         const baseProb = (term === 2) ? params.prob1 : params.prob3;
-        if (isSenior && Math.random() < params.prob4) {
-          role = 'vp';
-        } else if (Math.random() < baseProb) {
-          role = 'leader';
+        if (isSenior && Math.random() < params.prob4) role = 'vp';
+        else if (Math.random() < baseProb) role = 'leader';
+        else role = null;
+      }
+
+      // 若沒當組長/副社長,且規則啟用,判斷是否當副組長
+      if (role === null) {
+        if (params.deputyEnabled && Math.random() < params.deputyProb) {
+          role = 'deputy';
         } else {
           role = 'member';
         }
       }
 
-      // 組長或副社長都算 1 次合格資歷
-      if (role === 'leader' || role === 'vp') {
-        qualifyCount++;
-        if (role === 'vp') hadVP = true;
-      }
+      // 計數
+      if (role === 'leader' || role === 'vp') leaderCount++;
+      else if (role === 'deputy') deputyCount++;
       lastRole = role;
 
-      // 檢查資格:連續 3 期 + 2 次組長/副社長
-      if (consecutive >= 3 && qualifyCount >= 2) {
-        results.push(term);
-        eligible = true;
-        if (hadVP) pathStats.vpInvolved++;
-        else pathStats.leaderOnly++;
-        break;
+      // 檢查資格:連續 3 期 + 任一條件:
+      // (a) 2 次組長以上 [原規則]
+      // (b) 啟用副組長後: 1 次組長 + 1 次副組長 也可 [新規則]
+      if (consecutive >= 3) {
+        const meetOriginal = leaderCount >= 2;
+        const meetNew = params.deputyEnabled &&
+                        leaderCount >= 1 &&
+                        deputyCount >= 1;
+        if (meetOriginal || meetNew) {
+          results.push(term);
+          eligible = true;
+          break;
+        }
       }
     }
 
@@ -1582,7 +1902,6 @@ function simulate(params, runs = 5000) {
   }
 
   results.sort((a, b) => a - b);
-  results.pathStats = pathStats;
   return results;
 }
 
@@ -1608,6 +1927,9 @@ function getParams() {
     prob2: +document.getElementById('prob2').value / 100,
     prob3: +document.getElementById('prob3').value / 100,
     prob4: +document.getElementById('prob4').value / 100,
+    willingness: +document.getElementById('willingness').value / 100,
+    deputyEnabled: document.getElementById('rule-deputy').checked,
+    deputyProb: +document.getElementById('deputy-prob').value / 100,
   };
 }
 
@@ -1622,13 +1944,88 @@ function update() {
   document.getElementById('v-prob2').textContent = Math.round(p.prob2 * 100);
   document.getElementById('v-prob3').textContent = Math.round(p.prob3 * 100);
   document.getElementById('v-prob4').textContent = Math.round(p.prob4 * 100);
+  document.getElementById('v-willingness').textContent = Math.round(p.willingness * 100);
+  document.getElementById('v-deputy').textContent = Math.round(p.deputyProb * 100);
 
-  // 跑模擬
+  // 副組長控制群組的顯示/隱藏
+  const deputyControls = document.getElementById('deputy-controls');
+  deputyControls.style.display = p.deputyEnabled ? 'block' : 'none';
+
+  // 規則狀態徽章
+  const ruleBadge = document.getElementById('rule-badge');
+  if (ruleBadge) {
+    if (p.deputyEnabled) {
+      ruleBadge.textContent = '新規則(含副組長)';
+      ruleBadge.className = 'rule-badge active';
+    } else {
+      ruleBadge.textContent = '原規則';
+      ruleBadge.className = 'rule-badge';
+    }
+  }
+
+  // 規則說明區的副組長條款顯示
+  const deputyNote = document.getElementById('rule-deputy-note');
+  const deputySpacer = document.getElementById('rule-deputy-spacer');
+  const deputySupply = document.getElementById('rule-deputy-supply');
+  if (deputyNote) {
+    const showStyle = p.deputyEnabled ? 'inline' : 'none';
+    deputyNote.style.display = showStyle;
+    deputySpacer.style.display = p.deputyEnabled ? 'inline' : 'none';
+    deputySupply.style.display = showStyle;
+  }
+
+  // 跑模擬 — 同時跑「現行規則」與「原規則」(deputyEnabled=false) 做對比
   const results = simulate(p);
+  const resultsBaseline = p.deputyEnabled
+    ? simulate({...p, deputyEnabled: false})
+    : results;
 
   const median = percentile(results, 0.5);
   const fast = percentile(results, 0.1);
   const slow = percentile(results, 0.9);
+
+  // 對比資料(僅在啟用新規則時用)
+  const baselineMedian = percentile(resultsBaseline, 0.5);
+  const baselineSlow = percentile(resultsBaseline, 0.9);
+  const e10_new = results.filter(r => r <= 10).length / results.length;
+  const e10_old = resultsBaseline.filter(r => r <= 10).length / resultsBaseline.length;
+  const supply_new = p.newcomers * p.retain1 * p.retain2 * e10_new * p.willingness * 2;
+  const supply_old = p.newcomers * p.retain1 * p.retain2 * e10_old * p.willingness * 2;
+
+  // 更新規則標籤
+  const ruleTag = document.getElementById('rule-tag');
+  if (ruleTag) {
+    ruleTag.textContent = p.deputyEnabled ? '新規則 ★' : '原規則';
+    ruleTag.className = 'result-rule-tag' + (p.deputyEnabled ? ' active' : '');
+  }
+
+  // 顯示對比區
+  const ruleCompare = document.getElementById('rule-compare');
+  if (ruleCompare) {
+    ruleCompare.style.display = p.deputyEnabled ? 'block' : 'none';
+    if (p.deputyEnabled) {
+      document.getElementById('rc-time-old').textContent = (baselineMedian * 0.5).toFixed(1);
+      document.getElementById('rc-time-new').textContent = (median * 0.5).toFixed(1);
+      const td = (median - baselineMedian) * 0.5;
+      const tdEl = document.getElementById('rc-time-delta');
+      tdEl.textContent = (td >= 0 ? '+' : '') + td.toFixed(1) + ' 年';
+      tdEl.className = 'rc-delta ' + (td <= 0 ? 'positive' : 'negative');
+
+      document.getElementById('rc-supply-old').textContent = supply_old.toFixed(2);
+      document.getElementById('rc-supply-new').textContent = supply_new.toFixed(2);
+      const sd = supply_new - supply_old;
+      const sdEl = document.getElementById('rc-supply-delta');
+      sdEl.textContent = (sd >= 0 ? '+' : '') + sd.toFixed(2) + ' 位';
+      sdEl.className = 'rc-delta ' + (sd >= 0 ? 'positive' : 'negative');
+
+      document.getElementById('rc-slow-old').textContent = (baselineSlow * 0.5).toFixed(1);
+      document.getElementById('rc-slow-new').textContent = (slow * 0.5).toFixed(1);
+      const wd = (slow - baselineSlow) * 0.5;
+      const wdEl = document.getElementById('rc-slow-delta');
+      wdEl.textContent = (wd >= 0 ? '+' : '') + wd.toFixed(1) + ' 年';
+      wdEl.className = 'rc-delta ' + (wd <= 0 ? 'positive' : 'negative');
+    }
+  }
 
   // 顯示主要結果 (term 數 → 年數,每期 0.5 年)
   const termsToShow = median;
@@ -1694,30 +2091,34 @@ function renderFunnel(p, results) {
   const n3 = n2 * p.retain2;                    // 長期留下
 
   // 達成資格的條件機率:「長期留下」的人中,在合理時間(10 期 = 5 年內)達標的比例
-  // 超過 5 年才達標的,實務上多半已淡出社團活動,不會真的參選社長
   const eligibleIn10 = results.filter(r => r <= 10).length / results.length;
-  const n4 = n3 * eligibleIn10;
+  const n4 = n3 * eligibleIn10;                 // 取得資格
+  const n5 = n4 * p.willingness;                // 有意願者
 
   // 比例(以新人為 100%)
   const pct2 = (n2 / n1) * 100;
   const pct3 = (n3 / n1) * 100;
   const pct4 = (n4 / n1) * 100;
+  const pct5 = (n5 / n1) * 100;
 
   // 渲染各階段
   document.getElementById('funnel-n1').textContent = n1;
   document.getElementById('funnel-n2').textContent = n2.toFixed(1);
   document.getElementById('funnel-n3').textContent = n3.toFixed(2);
   document.getElementById('funnel-n4').textContent = n4.toFixed(2);
+  document.getElementById('funnel-n5').textContent = n5.toFixed(2);
+  document.getElementById('funnel-willing-pct').textContent = Math.round(p.willingness * 100);
 
   document.getElementById('funnel-bar-1').style.width = '100%';
   document.getElementById('funnel-bar-2').style.width = pct2 + '%';
   document.getElementById('funnel-bar-3').style.width = pct3 + '%';
   document.getElementById('funnel-bar-4').style.width = pct4 + '%';
+  document.getElementById('funnel-bar-5').style.width = pct5 + '%';
 
-  // 結論區
-  const newcomersPerPresident = n4 > 0 ? (n1 / n4) : 999;
-  const producePerTerm = n4;
-  const yearsPerPresident = n4 > 0 ? (0.5 / n4) : 999;
+  // 結論區 - 以「有意願者」為最終產出
+  const newcomersPerPresident = n5 > 0 ? (n1 / n5) : 999;
+  const producePerTerm = n5;
+  const yearsPerPresident = n5 > 0 ? (0.5 / n5) : 999;
 
   document.getElementById('need-newcomers').textContent = newcomersPerPresident.toFixed(0);
   document.getElementById('produce-per-term').textContent = producePerTerm.toFixed(2);
@@ -1725,29 +2126,29 @@ function renderFunnel(p, results) {
     ? yearsPerPresident.toFixed(1)
     : yearsPerPresident.toFixed(0);
 
-  // 90 人社團中同時具備社長資格的人數估算
-  // 假設達標後平均還會留任 2-3 期才退場(資深者),所以池子裡有約 2-3 倍的瞬時人數
-  const poolMin = Math.max(1, Math.round(n4 * 3));
-  const poolMax = Math.max(2, Math.round(n4 * 5));
+  // 90 人社團中同時具備社長資格且有意願的人數估算
+  const poolMin = Math.max(0, Math.round(n5 * 3));
+  const poolMax = Math.max(1, Math.round(n5 * 5));
   document.getElementById('pool-size').textContent =
     poolMin === poolMax ? poolMin : `${poolMin}-${poolMax}`;
 
   // 觸發供需平衡計算
-  renderBalance(p, results);
+  renderBalance(p, results, n5);
 }
 
-function renderBalance(p, results) {
-  // 供給計算
+function renderBalance(p, results, n5perTerm) {
+  // 供給計算 — 改用「有意願者」作為實際供給
   const n1 = p.newcomers;
   const eligibleIn10 = results.filter(r => r <= 10).length / results.length;
-  const perTerm = n1 * p.retain1 * p.retain2 * eligibleIn10;  // 每期產出
-  const yearlySupply = perTerm * 2;                           // 每年產出
-  const yearlyDemand = 2;                                     // 每年消耗 (2期 × 1社長)
+  const qualifiedPerTerm = n1 * p.retain1 * p.retain2 * eligibleIn10;  // 有資格者
+  const willingPerTerm = qualifiedPerTerm * p.willingness;             // 有意願者
+  const yearlySupply = willingPerTerm * 2;
+  const yearlyDemand = 2;
   const gap = yearlySupply - yearlyDemand;
 
   // 更新供給端顯示
   document.getElementById('b-newcomers').textContent = n1;
-  document.getElementById('b-per-term').textContent = perTerm.toFixed(2);
+  document.getElementById('b-per-term').textContent = willingPerTerm.toFixed(2);
   document.getElementById('b-yearly').textContent = yearlySupply.toFixed(2);
   document.getElementById('supply-yr').textContent = yearlySupply.toFixed(2);
 
@@ -1769,41 +2170,58 @@ function renderBalance(p, results) {
     gapCardEl.className = 'balance-gap';
     gapStatusEl.textContent = '勉強打平 · 高風險';
     gapMeaningEl.textContent =
-      '供需幾乎打平,沒有緩衝。一旦某期招新失利,2-3 年後便會出現候選人荒。';
+      '供需幾乎打平,沒有緩衝。一旦某期招新失利或意願下滑,2-3 年後便會出現候選人荒。';
   } else if (gap >= -0.5) {
     gapCardEl.className = 'balance-gap';
     gapStatusEl.textContent = '系統長期短缺';
     const yearsToEmpty = Math.abs(4 / gap);
     gapMeaningEl.textContent =
       `候選池會以每年 ${Math.abs(gap).toFixed(2)} 位的速度縮減,約 ${yearsToEmpty.toFixed(0)} 年後池子會見底。`;
-  } else {
+  } else if (gap >= -1.0) {
     gapCardEl.className = 'balance-gap';
     gapStatusEl.textContent = '嚴重短缺 · 系統不可持續';
+    const yearsToEmpty = Math.abs(4 / gap);
     gapMeaningEl.textContent =
-      `每年短缺 ${Math.abs(gap).toFixed(2)} 位,候選池將快速耗盡,可能需要降低資格門檻或延長社長任期。`;
+      `每年短缺 ${Math.abs(gap).toFixed(2)} 位,候選池將在 ${yearsToEmpty.toFixed(0)} 年內耗盡。意願不足是主因,需考慮制度誘因。`;
+  } else {
+    gapCardEl.className = 'balance-gap';
+    gapStatusEl.textContent = '⚠ 危機等級 · 招不到社長';
+    gapMeaningEl.textContent =
+      `每年短缺 ${Math.abs(gap).toFixed(2)} 位,等於每屆都會面臨「找不到願意承擔的人」。此為意願問題,非人才問題。`;
   }
 
   // 10 年走勢模擬
   renderProjection(yearlySupply, yearlyDemand);
 
   // 平衡方案計算
-  // 方案 A: 需要多少新人才能達到 yearlySupply = 2
-  // 公式: newcomers × retain1 × retain2 × eligibleIn10 × 2 = 2
-  // newcomers = 1 / (retain1 × retain2 × eligibleIn10)
-  const requiredNewcomers = 1 / (p.retain1 * p.retain2 * eligibleIn10);
-  document.getElementById('sol-newcomers').textContent = Math.ceil(requiredNewcomers);
+  // 方案 A: 需要多少新人(其他不變)
+  // newcomers × retain1 × retain2 × eligibleIn10 × willingness × 2 = 2
+  const denomA = p.retain1 * p.retain2 * eligibleIn10 * p.willingness;
+  const requiredNewcomers = denomA > 0 ? (1 / denomA) : 999;
+  document.getElementById('sol-newcomers').textContent =
+    requiredNewcomers > 100 ? '100+' : Math.ceil(requiredNewcomers);
   document.getElementById('sol-newcomers-delta').textContent =
     Math.max(0, Math.ceil(requiredNewcomers) - n1);
 
   // 方案 B: 需要多少留存率
-  // newcomers × retain1 × retain2 × eligibleIn10 × 2 = 2
-  // retain1 = 1 / (newcomers × retain2 × eligibleIn10)
-  const requiredRetain1 = 1 / (n1 * p.retain2 * eligibleIn10);
+  const denomB = n1 * p.retain2 * eligibleIn10 * p.willingness;
+  const requiredRetain1 = denomB > 0 ? (1 / denomB) : 1;
   const requiredRetain1Pct = Math.min(100, requiredRetain1 * 100);
   document.getElementById('sol-retain').textContent = requiredRetain1Pct.toFixed(0);
   document.getElementById('sol-retain-now').textContent = (p.retain1 * 100).toFixed(0);
   document.getElementById('sol-retain-delta').textContent =
     Math.max(0, requiredRetain1Pct - p.retain1 * 100).toFixed(0);
+
+  // 方案 D: 需要多少意願率(新增)
+  const denomD = n1 * p.retain1 * p.retain2 * eligibleIn10;
+  const requiredWillingness = denomD > 0 ? (1 / denomD) : 1;
+  const requiredWillingnessPct = Math.min(100, requiredWillingness * 100);
+  if (document.getElementById('sol-willingness')) {
+    document.getElementById('sol-willingness').textContent = requiredWillingnessPct.toFixed(0);
+    document.getElementById('sol-willingness-now').textContent = (p.willingness * 100).toFixed(0);
+    document.getElementById('sol-willingness-delta').textContent =
+      Math.max(0, requiredWillingnessPct - p.willingness * 100).toFixed(0);
+  }
 }
 
 function renderProjection(yearlySupply, yearlyDemand) {
@@ -1858,12 +2276,16 @@ function renderTimeline(eligibleTerm, params) {
 
   const totalTerms = Math.max(eligibleTerm + 1, 8);
 
-  // 一條典型路徑:在達成期前安排兩次「組長/副社」資歷
-  // 第一次組長通常較早(第 2~4 期),第二次可能是組長或副社長
-  const firstLeaderTerm = Math.max(2, Math.floor(eligibleTerm * 0.4));
-  const secondLeaderTerm = eligibleTerm - 1;
-  // 若達成期 >= 6,第二次資歷有機會是副社長(資深者)
-  const secondIsVP = eligibleTerm >= 6;
+  // 典型路徑安排
+  // 若啟用新規則:典型路徑可能是「組長 + 副組長」
+  // 否則:組長 / 副社長 兩次
+  const firstQualifyTerm = Math.max(2, Math.floor(eligibleTerm * 0.4));
+  const secondQualifyTerm = eligibleTerm - 1;
+
+  // 啟用新規則時,第一次是組長,第二次是副組長(因為達標時間縮短表示用副組長補)
+  // 沒啟用時,第二次達標如果時間長 → 副社長,短 → 組長
+  const useDeputyPath = params && params.deputyEnabled;
+  const secondIsVP = !useDeputyPath && eligibleTerm >= 6;
 
   for (let t = 1; t <= totalTerms; t++) {
     const block = document.createElement('div');
@@ -1876,11 +2298,14 @@ function renderTimeline(eligibleTerm, params) {
     } else if (t === eligibleTerm) {
       role = '✓ 取得資格';
       block.classList.add('eligible');
-    } else if (t === firstLeaderTerm) {
+    } else if (t === firstQualifyTerm) {
       role = '組長';
       block.classList.add('leader');
-    } else if (t === secondLeaderTerm) {
-      if (secondIsVP) {
+    } else if (t === secondQualifyTerm) {
+      if (useDeputyPath) {
+        role = '副組長';
+        block.classList.add('deputy');
+      } else if (secondIsVP) {
         role = '副社長';
         block.classList.add('vp');
       } else {
@@ -1908,6 +2333,7 @@ function renderTimeline(eligibleTerm, params) {
 document.querySelectorAll('input[type="range"]').forEach(el => {
   el.addEventListener('input', update);
 });
+document.getElementById('rule-deputy').addEventListener('change', update);
 
 // 初始化
 update();
