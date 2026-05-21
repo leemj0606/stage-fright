@@ -1,1381 +1,1916 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>澳洲三大能力架構動態分析工具 | Skills Portfolio Analyzer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<title>中壢健言社 社長資格動態試算</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#F5F1E8;
-  --bg-alt:#EBE5D6;
-  --ink:#1A1A1A;
-  --ink-soft:#3D3D3D;
-  --paper:#FAFAF5;
-  --rule:#2A2A2A;
-  --c-specialist:#C8442E;
-  --c-core:#2E5C8A;
-  --c-soft:#7A6B3F;
-  --shadow:0 2px 0 var(--rule);
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--bg);color:var(--ink);font-family:"Noto Serif TC",serif;line-height:1.6}
-body{
-  background-image:
-    radial-gradient(circle at 20% 10%, rgba(200,68,46,0.04) 0%, transparent 40%),
-    radial-gradient(circle at 80% 80%, rgba(46,92,138,0.04) 0%, transparent 40%);
-  min-height:100vh;
-  padding:32px 24px 80px;
-}
-.container{max-width:1200px;margin:0 auto}
+  :root {
+    --ink: #1a1a1a;
+    --paper: #f4f1e8;
+    --paper-dark: #e8e3d3;
+    --accent: #c8362d;
+    --accent-soft: #d96456;
+    --gold: #b8924a;
+    --teal: #2d6e6b;
+    --muted: #6b6357;
+    --grid: rgba(26, 26, 26, 0.08);
+    --shadow: 0 2px 0 var(--ink);
+  }
 
-/* === HEADER === */
-.masthead{
-  border-top:4px double var(--rule);
-  border-bottom:1px solid var(--rule);
-  padding:24px 0 20px;
-  margin-bottom:32px;
-  text-align:center;
-  position:relative;
-}
-.masthead::before{
-  content:"";
-  position:absolute;
-  top:8px;left:0;right:0;
-  border-top:1px solid var(--rule);
-}
-.eyebrow{
-  font-family:"JetBrains Mono",monospace;
-  font-size:11px;
-  letter-spacing:0.25em;
-  text-transform:uppercase;
-  color:var(--ink-soft);
-  margin-bottom:8px;
-}
-.title{
-  font-family:"Fraunces",serif;
-  font-weight:800;
-  font-size:clamp(32px,5vw,56px);
-  line-height:1.05;
-  letter-spacing:-0.02em;
-}
-.title em{font-style:italic;font-weight:400;color:var(--c-specialist)}
-.subtitle{
-  font-family:"Fraunces",serif;
-  font-style:italic;
-  font-size:16px;
-  color:var(--ink-soft);
-  margin-top:10px;
-}
-.dateline{
-  font-family:"JetBrains Mono",monospace;
-  font-size:10px;
-  letter-spacing:0.15em;
-  margin-top:14px;
-  color:var(--ink-soft);
-  display:flex;justify-content:center;gap:24px;flex-wrap:wrap;
-}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* === MODE TOGGLE === */
-.mode-switch{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:0;
-  border:1.5px solid var(--rule);
-  margin-bottom:28px;
-  background:var(--paper);
-}
-.mode-btn{
-  padding:18px 20px;
-  background:transparent;
-  border:none;
-  font-family:"Noto Serif TC",serif;
-  font-size:15px;
-  font-weight:600;
-  color:var(--ink-soft);
-  cursor:pointer;
-  text-align:left;
-  border-bottom:3px solid transparent;
-  transition:all 0.2s;
-  position:relative;
-}
-.mode-btn:first-child{border-right:1.5px solid var(--rule)}
-.mode-btn .num{
-  font-family:"JetBrains Mono",monospace;
-  font-size:10px;
-  color:var(--ink-soft);
-  display:block;
-  margin-bottom:4px;
-  letter-spacing:0.15em;
-}
-.mode-btn .desc{
-  font-family:"Fraunces",serif;
-  font-style:italic;
-  font-size:12px;
-  font-weight:400;
-  color:var(--ink-soft);
-  display:block;
-  margin-top:4px;
-}
-.mode-btn.active{
-  background:var(--ink);
-  color:var(--paper);
-  border-bottom-color:var(--c-core);
-}
-.mode-btn.active .num,
-.mode-btn.active .desc{color:var(--bg-alt)}
-.mode-btn:hover:not(.active){background:var(--bg-alt)}
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 32px 32px;
+    padding: 24px;
+  }
 
-/* === SECTION === */
-.section{display:none}
-.section.active{display:block;animation:fadeIn 0.4s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
 
-/* === PANEL === */
-.panel{
-  background:var(--paper);
-  border:1.5px solid var(--rule);
-  padding:32px;
-  margin-bottom:24px;
-  position:relative;
-}
-.panel-label{
-  position:absolute;
-  top:-10px;
-  left:24px;
-  background:var(--bg);
-  padding:0 12px;
-  font-family:"JetBrains Mono",monospace;
-  font-size:10px;
-  letter-spacing:0.2em;
-  color:var(--ink-soft);
-}
-.panel h2{
-  font-family:"Fraunces",serif;
-  font-weight:700;
-  font-size:24px;
-  margin-bottom:8px;
-  letter-spacing:-0.01em;
-}
-.panel .hint{
-  font-family:"Fraunces",serif;
-  font-style:italic;
-  font-size:14px;
-  color:var(--ink-soft);
-  margin-bottom:20px;
-  padding-bottom:16px;
-  border-bottom:1px dashed var(--rule);
-}
+  /* Header */
+  header {
+    border: 3px solid var(--ink);
+    background: var(--paper);
+    padding: 32px 40px;
+    margin-bottom: 24px;
+    position: relative;
+    box-shadow: 8px 8px 0 var(--ink);
+  }
 
-/* === 問題引導式表單 === */
-.question-block{
-  margin-bottom:32px;
-  padding-bottom:24px;
-  border-bottom:1px dashed var(--rule);
-}
-.question-block:last-child{border-bottom:none}
-.question-num{
-  font-family:"JetBrains Mono",monospace;
-  font-size:11px;
-  letter-spacing:0.2em;
-  color:var(--ink-soft);
-  margin-bottom:6px;
-}
-.question-title{
-  font-family:"Fraunces",serif;
-  font-weight:700;
-  font-size:20px;
-  margin-bottom:6px;
-  line-height:1.3;
-}
-.question-hint{
-  font-family:"Fraunces",serif;
-  font-style:italic;
-  font-size:13px;
-  color:var(--ink-soft);
-  margin-bottom:16px;
-}
-.q-input,.q-select{
-  width:100%;
-  padding:12px 14px;
-  border:1.5px solid var(--rule);
-  background:var(--bg);
-  font-family:"Noto Serif TC",serif;
-  font-size:15px;
-  color:var(--ink);
-  outline:none;
-  margin-bottom:8px;
-}
-.q-input:focus,.q-select:focus{background:var(--paper);box-shadow:var(--shadow)}
-.q-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:600px){.q-row{grid-template-columns:1fr}}
+  .header-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 4px 12px;
+    margin-bottom: 16px;
+  }
 
-.q-options{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
-.q-option{
-  padding:8px 14px;
-  background:var(--bg);
-  border:1.5px solid var(--rule);
-  font-family:"Noto Serif TC",serif;
-  font-size:13px;
-  cursor:pointer;
-  transition:all 0.15s;
-  font-weight:500;
-}
-.q-option:hover{background:var(--bg-alt)}
-.q-option.selected{background:var(--ink);color:var(--paper);box-shadow:var(--shadow)}
+  h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 900;
+    font-size: clamp(28px, 4vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
 
-/* 興趣動態列表 */
-.hobby-item{
-  background:var(--bg);
-  border:1px solid var(--rule);
-  padding:14px;
-  margin-bottom:10px;
-  position:relative;
-}
-.hobby-item .hobby-head{
-  display:flex;justify-content:space-between;align-items:center;
-  margin-bottom:10px;
-}
-.hobby-item .hobby-label{
-  font-family:"JetBrains Mono",monospace;
-  font-size:10px;
-  letter-spacing:0.15em;
-  color:var(--ink-soft);
-}
-.hobby-remove{
-  background:none;border:1px solid var(--rule);
-  padding:2px 10px;font-size:11px;cursor:pointer;
-  font-family:"JetBrains Mono",monospace;
-}
-.hobby-remove:hover{background:var(--c-specialist);color:white;border-color:var(--c-specialist)}
-.add-hobby-btn{
-  width:100%;
-  padding:12px;
-  background:transparent;
-  border:1.5px dashed var(--rule);
-  font-family:"Noto Serif TC",serif;
-  font-size:14px;
-  cursor:pointer;
-  color:var(--ink-soft);
-}
-.add-hobby-btn:hover{background:var(--bg-alt);color:var(--ink)}
+  h1 .accent { color: var(--accent); }
 
-/* === BUTTONS === */
-.btn{
-  padding:14px 24px;
-  background:var(--ink);
-  color:var(--paper);
-  border:1.5px solid var(--rule);
-  font-family:"Noto Serif TC",serif;
-  font-size:15px;
-  font-weight:600;
-  cursor:pointer;
-  letter-spacing:0.05em;
-  transition:all 0.15s;
-}
-.btn:hover{background:var(--c-core);transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--rule)}
-.btn:active{transform:translate(0,0);box-shadow:none}
-.btn.secondary{background:var(--paper);color:var(--ink)}
-.btn.secondary:hover{background:var(--bg-alt)}
+  .subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 720px;
+    line-height: 1.6;
+  }
 
-.action-bar{
-  display:flex;gap:12px;justify-content:flex-end;
-  padding-top:24px;border-top:3px double var(--rule);
-  margin-top:32px;flex-wrap:wrap;
-}
+  .stamp {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    padding: 8px 16px;
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700;
+    font-size: 13px;
+    transform: rotate(6deg);
+    letter-spacing: 0.1em;
+  }
 
-/* === 行業反查（右側） === */
-.input-row{
-  display:flex;
-  gap:12px;
-  align-items:stretch;
-  margin-bottom:16px;
-  flex-wrap:wrap;
-}
-.input-row input{
-  flex:1;
-  min-width:240px;
-  padding:14px 16px;
-  border:1.5px solid var(--rule);
-  background:var(--bg);
-  font-family:"Noto Serif TC",serif;
-  font-size:16px;
-  color:var(--ink);
-  outline:none;
-}
-.input-row input:focus{background:var(--paper);box-shadow:var(--shadow)}
-.preset-tags{
-  display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;
-}
-.preset-tag{
-  padding:6px 12px;
-  background:transparent;
-  border:1px solid var(--rule);
-  font-family:"JetBrains Mono",monospace;
-  font-size:11px;
-  cursor:pointer;
-  color:var(--ink-soft);
-  transition:all 0.15s;
-}
-.preset-tag:hover{background:var(--ink);color:var(--paper)}
+  /* Layout */
+  .grid {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 24px;
+  }
 
-.industry-result{margin-top:32px;display:none}
-.industry-result.show{display:block}
-.industry-header{
-  padding:20px 0;
-  border-top:3px double var(--rule);
-  border-bottom:1px solid var(--rule);
-  margin-bottom:24px;
-  display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:12px;
-}
-.industry-name{
-  font-family:"Fraunces",serif;
-  font-weight:800;
-  font-size:32px;
-  letter-spacing:-0.02em;
-}
-.industry-meta{
-  font-family:"JetBrains Mono",monospace;
-  font-size:11px;
-  color:var(--ink-soft);
-  letter-spacing:0.1em;
-}
+  @media (max-width: 960px) {
+    .grid { grid-template-columns: 1fr; }
+    .stamp { display: none; }
+  }
 
-.pillar-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
-.pillar{
-  border:1.5px solid var(--rule);
-  background:var(--paper);
-  padding:24px;
-  position:relative;
-  overflow:hidden;
-}
-.pillar::before{
-  content:"";
-  position:absolute;
-  top:0;left:0;right:0;
-  height:6px;
-  background:var(--accent);
-}
-.pillar[data-type="specialist"]{--accent:var(--c-specialist)}
-.pillar[data-type="core"]{--accent:var(--c-core)}
-.pillar[data-type="soft"]{--accent:var(--c-soft)}
+  /* Panel */
+  .panel {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    box-shadow: 6px 6px 0 var(--ink);
+  }
 
-.pillar-num{
-  font-family:"JetBrains Mono",monospace;
-  font-size:48px;
-  font-weight:600;
-  color:var(--accent);
-  line-height:1;
-  margin-bottom:8px;
-  opacity:0.9;
-}
-.pillar-title{
-  font-family:"Fraunces",serif;
-  font-weight:700;
-  font-size:20px;
-  margin-bottom:4px;
-}
-.pillar-title-en{
-  font-family:"Fraunces",serif;
-  font-style:italic;
-  font-size:13px;
-  color:var(--ink-soft);
-  margin-bottom:16px;
-  padding-bottom:12px;
-  border-bottom:1px dashed var(--rule);
-}
-.skill-list{list-style:none}
-.skill-list li{
-  padding:10px 0;
-  border-bottom:1px dotted #ccc;
-  font-size:14px;
-  display:flex;align-items:flex-start;gap:10px;
-}
-.skill-list li:last-child{border-bottom:none}
-.skill-list li::before{
-  content:"§";
-  font-family:"Fraunces",serif;
-  color:var(--accent);
-  font-weight:700;
-  flex-shrink:0;
-  margin-top:1px;
-}
-.weight-bar{
-  margin-top:14px;padding-top:14px;border-top:1px solid var(--rule);
-  display:flex;justify-content:space-between;align-items:center;
-  font-family:"JetBrains Mono",monospace;font-size:10px;
-  letter-spacing:0.1em;color:var(--ink-soft);
-}
-.weight-track{
-  flex:1;
-  height:4px;
-  background:var(--bg-alt);
-  margin:0 12px;
-  position:relative;
-}
-.weight-fill{
-  position:absolute;
-  top:0;left:0;height:100%;
-  background:var(--accent);
-}
+  .panel-header {
+    border-bottom: 2px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-/* === 評估結果 === */
-.result-board{display:none;margin-top:32px}
-.result-board.show{display:block}
-.result-header{
-  text-align:center;
-  padding:32px 0;
-  border-top:4px double var(--rule);
-  border-bottom:4px double var(--rule);
-  margin-bottom:32px;
-}
-.result-header .eyebrow{margin-bottom:8px}
-.result-header h2{
-  font-family:"Fraunces",serif;
-  font-size:36px;
-  font-weight:800;
-  letter-spacing:-0.02em;
-}
+  .panel-body {
+    padding: 24px;
+  }
 
-.profile-grid{
-  display:grid;
-  grid-template-columns:1.2fr 1fr;
-  gap:24px;
-  margin-bottom:32px;
-}
-@media(max-width:768px){.profile-grid{grid-template-columns:1fr}}
+  /* Controls */
+  .control-group {
+    margin-bottom: 22px;
+  }
 
-.radar-wrap{
-  background:var(--paper);
-  border:1.5px solid var(--rule);
-  padding:24px;
-  position:relative;
-}
-.radar-wrap h3{
-  font-family:"Fraunces",serif;
-  font-size:18px;
-  margin-bottom:12px;
-  font-weight:700;
-}
-.score-summary{
-  background:var(--paper);
-  border:1.5px solid var(--rule);
-  padding:24px;
-}
-.score-summary h3{
-  font-family:"Fraunces",serif;
-  font-size:18px;
-  margin-bottom:16px;
-  font-weight:700;
-}
-.score-row{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:14px 0;
-  border-bottom:1px dotted #aaa;
-}
-.score-row:last-child{border-bottom:none}
-.score-row-label{
-  display:flex;align-items:center;gap:10px;
-  font-size:14px;font-weight:600;
-}
-.score-row-label .dot{width:12px;height:12px;border-radius:50%}
-.score-row-value{
-  font-family:"JetBrains Mono",monospace;
-  font-size:24px;font-weight:600;
-}
+  .control-group:last-child {
+    margin-bottom: 0;
+  }
 
-/* 證據摘要 */
-.evidence-section{
-  background:var(--paper);
-  border:1.5px solid var(--rule);
-  padding:32px;
-  margin-bottom:24px;
-}
-.evidence-section h3{
-  font-family:"Fraunces",serif;
-  font-size:24px;font-weight:700;
-  margin-bottom:6px;
-}
-.evidence-section .hint{
-  font-family:"Fraunces",serif;
-  font-style:italic;font-size:13px;
-  color:var(--ink-soft);margin-bottom:20px;
-  padding-bottom:16px;border-bottom:1px dashed var(--rule);
-}
-.evidence-list{display:grid;gap:10px}
-.evidence-row{
-  display:grid;
-  grid-template-columns:auto 1fr auto;
-  gap:14px;
-  align-items:center;
-  padding:12px 14px;
-  background:var(--bg);
-  border:1px solid var(--rule);
-}
-.evidence-tag{
-  font-family:"JetBrains Mono",monospace;
-  font-size:9px;
-  padding:3px 8px;
-  letter-spacing:0.1em;
-  background:var(--accent,#888);
-  color:white;
-  white-space:nowrap;
-}
-.evidence-row[data-type="specialist"]{--accent:var(--c-specialist)}
-.evidence-row[data-type="core"]{--accent:var(--c-core)}
-.evidence-row[data-type="soft"]{--accent:var(--c-soft)}
-.evidence-text{font-size:13px;line-height:1.5}
-.evidence-text strong{color:var(--ink)}
-.evidence-point{
-  font-family:"JetBrains Mono",monospace;
-  font-size:13px;font-weight:600;
-  color:var(--accent);
-  white-space:nowrap;
-}
+  .control-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
 
-/* 推薦職業 */
-.recommendation-section{
-  background:var(--paper);
-  border:1.5px solid var(--rule);
-  padding:32px;
-}
-.recommendation-section h3{
-  font-family:"Fraunces",serif;
-  font-size:24px;font-weight:700;
-  margin-bottom:6px;
-}
-.recommendation-section .hint{
-  font-family:"Fraunces",serif;
-  font-style:italic;font-size:13px;
-  color:var(--ink-soft);margin-bottom:20px;
-  padding-bottom:16px;border-bottom:1px dashed var(--rule);
-}
-.career-card{
-  border:1px solid var(--rule);
-  padding:18px;
-  margin-bottom:12px;
-  background:var(--bg);
-  display:grid;
-  grid-template-columns:auto 1fr auto;
-  gap:18px;
-  align-items:center;
-}
-.career-rank{
-  font-family:"Fraunces",serif;
-  font-style:italic;
-  font-size:32px;
-  font-weight:800;
-  color:var(--c-core);
-  line-height:1;
-  min-width:42px;
-}
-.career-body h4{
-  font-family:"Fraunces",serif;
-  font-size:18px;font-weight:700;
-  margin-bottom:4px;
-}
-.career-body .career-en{
-  font-family:"Fraunces",serif;
-  font-style:italic;
-  font-size:12px;color:var(--ink-soft);
-  margin-bottom:6px;
-}
-.career-body p{font-size:13px;color:var(--ink-soft);line-height:1.5}
-.career-match{
-  text-align:right;
-  font-family:"JetBrains Mono",monospace;
-}
-.career-match-num{
-  font-size:28px;font-weight:600;
-  color:var(--c-specialist);
-  line-height:1;
-}
-.career-match-label{
-  font-size:9px;letter-spacing:0.2em;
-  color:var(--ink-soft);margin-top:4px;
-}
+  .control-label .name {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700;
+    font-size: 14px;
+  }
 
-/* === FOOTER === */
-.footer{
-  margin-top:48px;
-  padding-top:24px;
-  border-top:1px solid var(--rule);
-  text-align:center;
-  font-family:"JetBrains Mono",monospace;
-  font-size:10px;
-  letter-spacing:0.15em;
-  color:var(--ink-soft);
-}
+  .control-label .value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--paper-dark);
+    padding: 2px 8px;
+    border: 1px solid var(--ink);
+  }
 
-@media(max-width:600px){
-  .mode-switch{grid-template-columns:1fr}
-  .mode-btn:first-child{border-right:none;border-bottom:1.5px solid var(--rule)}
-  .panel{padding:20px}
-  .industry-name{font-size:24px}
-}
+  .control-label .unit {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: var(--paper-dark);
+    border: 1px solid var(--ink);
+    outline: none;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background: var(--accent);
+    border: 2px solid var(--ink);
+    cursor: pointer;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: var(--accent);
+    border: 2px solid var(--ink);
+    cursor: pointer;
+  }
+
+  .description {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  /* Result Card */
+  .result-card {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 28px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .result-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+    opacity: 0.25;
+    pointer-events: none;
+  }
+
+  .result-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--paper-dark);
+    margin-bottom: 12px;
+  }
+
+  .result-main {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .result-number {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 900;
+    font-size: 64px;
+    line-height: 1;
+    color: var(--paper);
+  }
+
+  .result-number .small {
+    font-size: 28px;
+    color: var(--gold);
+    margin-left: 4px;
+  }
+
+  .result-secondary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px dashed rgba(244, 241, 232, 0.3);
+  }
+
+  .result-stat .label {
+    font-size: 10px;
+    color: var(--paper-dark);
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .result-stat .num {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--paper);
+  }
+
+  .result-stat .num .accent-text { color: var(--accent-soft); }
+
+  /* Probability bar */
+  .prob-section {
+    padding: 20px 24px;
+    border-top: 2px solid var(--ink);
+  }
+
+  .prob-section-title {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .prob-section-title::before {
+    content: '';
+    width: 4px;
+    height: 18px;
+    background: var(--accent);
+  }
+
+  .prob-row {
+    display: grid;
+    grid-template-columns: 110px 1fr 60px;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+
+  .prob-row .label-text {
+    font-weight: 500;
+  }
+
+  .prob-bar {
+    height: 22px;
+    background: var(--paper-dark);
+    border: 1px solid var(--ink);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .prob-bar-fill {
+    height: 100%;
+    background: repeating-linear-gradient(
+      45deg,
+      var(--accent),
+      var(--accent) 6px,
+      var(--accent-soft) 6px,
+      var(--accent-soft) 12px
+    );
+    transition: width 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  .prob-bar-fill.green {
+    background: repeating-linear-gradient(
+      45deg,
+      var(--teal),
+      var(--teal) 6px,
+      #3a8884 6px,
+      #3a8884 12px
+    );
+  }
+
+  .prob-bar-fill.gold {
+    background: repeating-linear-gradient(
+      45deg,
+      var(--gold),
+      var(--gold) 6px,
+      #d4a85c 6px,
+      #d4a85c 12px
+    );
+  }
+
+  .prob-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    text-align: right;
+    font-size: 13px;
+  }
+
+  /* Timeline */
+  .timeline-section {
+    margin-top: 24px;
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    box-shadow: 6px 6px 0 var(--ink);
+  }
+
+  .timeline-body {
+    padding: 24px;
+    overflow-x: auto;
+  }
+
+  .timeline-track {
+    display: flex;
+    gap: 4px;
+    min-width: min-content;
+    padding-bottom: 8px;
+  }
+
+  .term-block {
+    min-width: 88px;
+    flex: 1;
+    border: 1.5px solid var(--ink);
+    background: var(--paper);
+    padding: 10px 8px;
+    text-align: center;
+    position: relative;
+    transition: all 0.2s;
+  }
+
+  .term-block.new { background: var(--paper-dark); }
+  .term-block.member { background: #e8d9c5; }
+  .term-block.leader { background: var(--gold); color: var(--paper); }
+  .term-block.vp { background: var(--teal); color: var(--paper); }
+  .term-block.eligible {
+    background: var(--accent);
+    color: var(--paper);
+    box-shadow: 0 0 0 3px var(--ink), 4px 4px 0 var(--ink);
+    transform: translateY(-4px);
+  }
+
+  .term-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+    margin-bottom: 4px;
+  }
+
+  .term-role {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 1.2;
+  }
+
+  .term-year {
+    font-size: 10px;
+    margin-top: 4px;
+    opacity: 0.6;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Path stories */
+  .scenarios {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .scenario-card {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    padding: 20px;
+    position: relative;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+
+  .scenario-card.lucky {
+    background: linear-gradient(135deg, var(--paper) 0%, #f5e8d0 100%);
+  }
+
+  .scenario-card.average {
+    background: linear-gradient(135deg, var(--paper) 0%, #e8e3d3 100%);
+  }
+
+  .scenario-card.slow {
+    background: linear-gradient(135deg, var(--paper) 0%, #e0dccc 100%);
+  }
+
+  .scenario-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    padding: 3px 8px;
+    border: 1px solid var(--ink);
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+
+  .scenario-card.lucky .scenario-tag { background: var(--gold); color: var(--paper); }
+  .scenario-card.average .scenario-tag { background: var(--ink); color: var(--paper); }
+  .scenario-card.slow .scenario-tag { background: var(--muted); color: var(--paper); }
+
+  .scenario-title {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 900;
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+
+  .scenario-duration {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 32px;
+    color: var(--accent);
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+
+  .scenario-duration .yr {
+    font-size: 14px;
+    color: var(--muted);
+    margin-left: 4px;
+  }
+
+  .scenario-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-top: 10px;
+  }
+
+  /* Footer notes */
+  .notes {
+    margin-top: 24px;
+    padding: 20px;
+    border: 1.5px dashed var(--ink);
+    background: var(--paper);
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .notes strong {
+    color: var(--ink);
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700;
+  }
+
+  .notes-title {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 900;
+    font-size: 14px;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .legend-swatch {
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid var(--ink);
+  }
+
+  .swatch-new { background: var(--paper-dark); }
+  .swatch-member { background: #e8d9c5; }
+  .swatch-leader { background: var(--gold); }
+  .swatch-vp { background: var(--teal); }
+  .swatch-eligible { background: var(--accent); }
+
+  @keyframes pulse {
+    0%, 100% { transform: translateY(-4px) scale(1); }
+    50% { transform: translateY(-4px) scale(1.05); }
+  }
+
+  .term-block.eligible {
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  /* Funnel */
+  .funnel-body {
+    padding: 28px 32px;
+  }
+
+  .funnel-intro {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed var(--ink);
+    line-height: 1.6;
+  }
+
+  .funnel-intro strong {
+    color: var(--accent);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+  }
+
+  .funnel-stages {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .funnel-stage {
+    display: grid;
+    grid-template-columns: 40px 1fr 180px;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .stage-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-align: center;
+    padding: 6px 0;
+    border: 1.5px solid var(--ink);
+    background: var(--paper);
+  }
+
+  .stage-bar {
+    height: 36px;
+    background: var(--paper-dark);
+    border: 1.5px solid var(--ink);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stage-bar-fill {
+    height: 100%;
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--teal),
+      var(--teal) 8px,
+      #3a8884 8px,
+      #3a8884 16px
+    );
+    transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  .stage-bar-fill.final-fill {
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--accent),
+      var(--accent) 8px,
+      var(--accent-soft) 8px,
+      var(--accent-soft) 16px
+    );
+  }
+
+  .stage-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .stage-label {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  .stage-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  .stage-count.accent-color {
+    color: var(--accent);
+    font-size: 17px;
+  }
+
+  .funnel-arrow {
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    padding: 4px 0;
+    margin-left: 56px;
+  }
+
+  .funnel-conclusion {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 2px solid var(--ink);
+  }
+
+  .conclusion-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  .conclusion-item {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    padding: 18px;
+    text-align: center;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+
+  .conclusion-item:nth-child(2) {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .conclusion-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+
+  .conclusion-item:nth-child(2) .conclusion-label {
+    color: var(--paper-dark);
+  }
+
+  .conclusion-big {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 900;
+    font-size: 38px;
+    line-height: 1;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .conclusion-item:nth-child(2) .conclusion-big {
+    color: var(--gold);
+  }
+
+  .conclusion-big .unit {
+    font-size: 13px;
+    color: var(--muted);
+    margin-left: 4px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 500;
+  }
+
+  .conclusion-item:nth-child(2) .conclusion-big .unit {
+    color: var(--paper-dark);
+  }
+
+  .conclusion-sub {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .conclusion-item:nth-child(2) .conclusion-sub {
+    color: var(--paper-dark);
+  }
+
+  /* === Supply vs Demand Balance === */
+  .balance-body {
+    padding: 28px 32px;
+  }
+
+  .balance-intro {
+    padding: 16px 20px;
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+
+  .balance-intro u {
+    text-decoration: underline wavy var(--accent);
+    text-underline-offset: 3px;
+  }
+
+  .balance-compare {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: 16px;
+    align-items: stretch;
+    margin-bottom: 24px;
+  }
+
+  .balance-side {
+    border: 2px solid var(--ink);
+    padding: 22px 20px;
+    box-shadow: 4px 4px 0 var(--ink);
+    text-align: center;
+  }
+
+  .balance-side.supply {
+    background: linear-gradient(135deg, #d8e5d8 0%, #c4d8c4 100%);
+  }
+
+  .balance-side.demand {
+    background: linear-gradient(135deg, #f5d6d0 0%, #ebbcb3 100%);
+  }
+
+  .balance-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    padding: 4px 10px;
+    background: var(--ink);
+    color: var(--paper);
+    display: inline-block;
+    margin-bottom: 14px;
+  }
+
+  .balance-headline {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .balance-number {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 900;
+    font-size: 56px;
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .balance-unit {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .balance-detail {
+    font-size: 12px;
+    color: var(--ink);
+    text-align: left;
+    background: rgba(244, 241, 232, 0.6);
+    padding: 10px 12px;
+    border: 1px solid var(--ink);
+    line-height: 1.7;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .balance-vs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 900;
+    font-size: 28px;
+    color: var(--accent);
+  }
+
+  .balance-gap {
+    border: 3px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 28px;
+    position: relative;
+    box-shadow: 6px 6px 0 var(--accent);
+  }
+
+  .balance-gap.surplus {
+    background: var(--teal);
+    box-shadow: 6px 6px 0 var(--ink);
+  }
+
+  .gap-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--paper-dark);
+    margin-bottom: 6px;
+  }
+
+  .gap-number {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 900;
+    font-size: 64px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .gap-number.negative { color: #ff6b5b; }
+  .gap-number.positive { color: #8fdbb0; }
+
+  .gap-status {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  .gap-meaning {
+    font-size: 12px;
+    color: var(--paper-dark);
+    line-height: 1.6;
+  }
+
+  /* 10-year projection chart */
+  .pool-projection {
+    margin-bottom: 28px;
+  }
+
+  .projection-title {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .projection-title::before {
+    content: '';
+    width: 4px;
+    height: 18px;
+    background: var(--accent);
+  }
+
+  .projection-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    padding-left: 14px;
+  }
+
+  .projection-chart {
+    border: 1.5px solid var(--ink);
+    background: var(--paper);
+    padding: 16px;
+    display: grid;
+    grid-template-columns: 40px repeat(10, 1fr);
+    gap: 4px;
+    align-items: end;
+    height: 220px;
+  }
+
+  .year-axis {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    text-align: right;
+    padding-right: 4px;
+    border-right: 1px dashed var(--grid);
+  }
+
+  .year-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    gap: 2px;
+    position: relative;
+  }
+
+  .year-pool-bar {
+    width: 70%;
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--ink),
+      var(--ink) 4px,
+      #2d2d2d 4px,
+      #2d2d2d 8px
+    );
+    border: 1px solid var(--ink);
+    min-height: 2px;
+    position: relative;
+  }
+
+  .year-pool-bar.empty {
+    background: var(--paper-dark);
+  }
+
+  .year-pool-bar.critical {
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--accent),
+      var(--accent) 4px,
+      var(--accent-soft) 4px,
+      var(--accent-soft) 8px
+    );
+  }
+
+  .year-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+
+  .year-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .projection-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 12px;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+  }
+
+  .leg-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .leg-dot {
+    width: 12px;
+    height: 12px;
+    border: 1.5px solid var(--ink);
+  }
+
+  .leg-dot.pool {
+    background: repeating-linear-gradient(-45deg, var(--ink), var(--ink) 3px, #2d2d2d 3px, #2d2d2d 6px);
+  }
+
+  .leg-dot.in { background: var(--teal); }
+  .leg-dot.out { background: var(--accent); }
+
+  /* Solutions */
+  .solutions {
+    border-top: 2px solid var(--ink);
+    padding-top: 24px;
+  }
+
+  .solutions-title {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 900;
+    font-size: 16px;
+    margin-bottom: 16px;
+    color: var(--ink);
+  }
+
+  .solutions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .solution-card {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    padding: 18px;
+    text-align: center;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+
+  .sol-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    background: var(--paper-dark);
+    padding: 4px 8px;
+    margin-bottom: 12px;
+    border: 1px solid var(--ink);
+    display: inline-block;
+  }
+
+  .sol-value {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+
+  .sol-value strong {
+    font-size: 28px;
+    color: var(--accent);
+    display: inline-block;
+  }
+
+  .sol-note {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  @media (max-width: 720px) {
+    .balance-compare { grid-template-columns: 1fr; }
+    .balance-vs { padding: 10px 0; }
+    .projection-chart { grid-template-columns: 30px repeat(10, 1fr); padding: 12px 8px; }
+  }
 </style>
 </head>
 <body>
 <div class="container">
 
-  <!-- HEADER -->
-  <header class="masthead">
-    <div class="eyebrow">Skills Portfolio · Australian Standard Classification</div>
-    <h1 class="title">三大能力 <em>架構分析</em></h1>
-    <p class="subtitle">A diagnostic instrument based on ASC three-pillar model</p>
-    <div class="dateline">
-      <span>VOL. 02</span>
-      <span>SPECIALIST · CORE · SOFT</span>
-      <span>EDU. ED.</span>
-    </div>
+  <header>
+    <div class="stamp">第 86 期</div>
+    <div class="header-tag">JIANYAN · TOASTMASTERS · CALCULATOR</div>
+    <h1>中壢健言社<br><span class="accent">社長養成路徑</span> 動態試算</h1>
+    <p class="subtitle">
+      依資格規則「連續 3 期 + 2 次組長以上」,推算新社友取得社長資格所需時間。<br>
+      <strong style="color:var(--accent);">並推算供給端</strong>:每期 20 新人 + 70 舊社友(共 90 人)的社團,需要多少新人才能產出 1 位社長候選人。
+    </p>
   </header>
 
-  <!-- MODE TOGGLE -->
-  <div class="mode-switch">
-    <button class="mode-btn active" data-mode="self">
-      <span class="num">MODE 01 / 由能力出發</span>
-      回答關於你的問題，推薦適合職業
-      <span class="desc">Answer about yourself → Discover careers</span>
-    </button>
-    <button class="mode-btn" data-mode="industry">
-      <span class="num">MODE 02 / 由行業出發</span>
-      輸入行業，看需要哪些能力
-      <span class="desc">Input an industry → Reveal required skills</span>
-    </button>
+  <div class="grid">
+
+    <!-- 左：控制面板 -->
+    <div>
+      <div class="panel">
+        <div class="panel-header">
+          <span>PARAMETERS · 參數設定</span>
+          <span>01</span>
+        </div>
+        <div class="panel-body">
+
+          <div class="control-group">
+            <div class="control-label">
+              <span class="name">每期新人入社數</span>
+              <span class="value"><span id="v-newcomers">20</span>人</span>
+            </div>
+            <input type="range" id="newcomers" min="5" max="40" value="20" step="1">
+            <div class="description">每半年招進來的新社友人數</div>
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span class="name">新人 → 第二期留存率</span>
+              <span class="value"><span id="v-retain1">25</span>%</span>
+            </div>
+            <input type="range" id="retain1" min="10" max="50" value="25" step="1">
+            <div class="description">20 人中約 5 人會留下來 → 約 25%</div>
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span class="name">第二期 → 長期留存率</span>
+              <span class="value"><span id="v-retain2">20</span>%</span>
+            </div>
+            <input type="range" id="retain2" min="5" max="50" value="20" step="1">
+            <div class="description">5 人中約 1 人持續走下去 → 約 20%</div>
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span class="name">第二期被選為組長機率</span>
+              <span class="value"><span id="v-prob1">35</span>%</span>
+            </div>
+            <input type="range" id="prob1" min="10" max="80" value="35" step="1">
+            <div class="description">7 個組長缺,扣除 4-5 連任,剩 2-3 個給新人競爭</div>
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span class="name">續任組長機率</span>
+              <span class="value"><span id="v-prob2">65</span>%</span>
+            </div>
+            <input type="range" id="prob2" min="30" max="90" value="65" step="1">
+            <div class="description">7 個組長中約 4-5 個是上屆連任 → 約 65%</div>
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span class="name">沒當上後,下次被選機率</span>
+              <span class="value"><span id="v-prob3">30</span>%</span>
+            </div>
+            <input type="range" id="prob3" min="10" max="70" value="30" step="1">
+            <div class="description">第二期沒選上時,後續每期重新被指派的機率</div>
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span class="name">資深後被選副社長機率</span>
+              <span class="value"><span id="v-prob4">25</span>%</span>
+            </div>
+            <input type="range" id="prob4" min="0" max="60" value="25" step="1">
+            <div class="description">已當過至少 1 次組長且為資深社友時,被選為副社長的機率(副社長算組長以上資歷)</div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="notes">
+        <div class="notes-title">資格規則 / Rule Set</div>
+        <strong>① 連續參加 3 期</strong>(1.5 年起跳)<br>
+        <strong>② 累計擔任過 2 次組長以上</strong>(副社長也算)<br>
+        <strong>③ 組長/副社長由社長指定</strong>,非選舉產生<br>
+        <strong>④ 第一期一定是新人</strong>,不能當組長<br>
+        <strong>⑤ 每期 9 個培養位</strong>:2 副社長 + 7 組長<br>
+        &nbsp;&nbsp;&nbsp;副社長多為資深社友,7 組長中 4-5 連任 + 2-3 新血
+      </div>
+    </div>
+
+    <!-- 右:結果區 -->
+    <div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span>EXPECTED PATH · 預期路徑</span>
+          <span>02</span>
+        </div>
+
+        <div class="result-card">
+          <div class="result-label">▎ EXPECTED TIME TO ELIGIBILITY</div>
+          <div class="result-main">
+            <div class="result-number"><span id="r-years">5.0</span><span class="small">年</span></div>
+            <div style="color: var(--paper-dark); font-size: 14px;">
+              ≈ <span id="r-terms">10</span> 期<br>
+              <span style="font-size: 11px; opacity: 0.7;">average · 平均條件達成時間</span>
+            </div>
+          </div>
+          <div class="result-secondary">
+            <div class="result-stat">
+              <div class="label">FASTEST · 最快</div>
+              <div class="num"><span id="r-fast">2.5</span> <span class="accent-text" style="font-size:14px;">年</span></div>
+            </div>
+            <div class="result-stat">
+              <div class="label">TYPICAL · 一般</div>
+              <div class="num"><span id="r-typical">5.0</span> <span class="accent-text" style="font-size:14px;">年</span></div>
+            </div>
+            <div class="result-stat">
+              <div class="label">SLOWEST · 較慢</div>
+              <div class="num"><span id="r-slow">8.0</span> <span class="accent-text" style="font-size:14px;">年</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="prob-section">
+          <div class="prob-section-title">關鍵節點機率拆解</div>
+
+          <div class="prob-row">
+            <div class="label-text">通過第二期</div>
+            <div class="prob-bar"><div class="prob-bar-fill green" id="bar-survive1"></div></div>
+            <div class="prob-value" id="pct-survive1">25%</div>
+          </div>
+
+          <div class="prob-row">
+            <div class="label-text">長期留下</div>
+            <div class="prob-bar"><div class="prob-bar-fill green" id="bar-survive2"></div></div>
+            <div class="prob-value" id="pct-survive2">5%</div>
+          </div>
+
+          <div class="prob-row">
+            <div class="label-text">第二期就當組長</div>
+            <div class="prob-bar"><div class="prob-bar-fill gold" id="bar-leader1"></div></div>
+            <div class="prob-value" id="pct-leader1">35%</div>
+          </div>
+
+          <div class="prob-row">
+            <div class="label-text">資深後當副社長</div>
+            <div class="prob-bar"><div class="prob-bar-fill gold" id="bar-vp"></div></div>
+            <div class="prob-value" id="pct-vp">25%</div>
+          </div>
+
+          <div class="prob-row">
+            <div class="label-text">3 期內取得資格</div>
+            <div class="prob-bar"><div class="prob-bar-fill" id="bar-elig3"></div></div>
+            <div class="prob-value" id="pct-elig3">--</div>
+          </div>
+
+          <div class="prob-row">
+            <div class="label-text">5 期內取得資格</div>
+            <div class="prob-bar"><div class="prob-bar-fill" id="bar-elig5"></div></div>
+            <div class="prob-value" id="pct-elig5">--</div>
+          </div>
+
+          <div class="prob-row">
+            <div class="label-text">8 期內取得資格</div>
+            <div class="prob-bar"><div class="prob-bar-fill" id="bar-elig8"></div></div>
+            <div class="prob-value" id="pct-elig8">--</div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="timeline-section">
+        <div class="panel-header">
+          <span>TALENT FUNNEL · 人才漏斗(供給端推算)</span>
+          <span>03</span>
+        </div>
+        <div class="funnel-body">
+          <div class="funnel-intro">
+            每期 <strong>20 位新人</strong> 進入社團,經過層層篩選後,究竟能產出幾位社長候選人?
+          </div>
+
+          <div class="funnel-stages">
+            <div class="funnel-stage">
+              <div class="stage-num">01</div>
+              <div class="stage-bar" style="width: 100%;">
+                <div class="stage-bar-fill" id="funnel-bar-1" style="width: 100%;"></div>
+              </div>
+              <div class="stage-info">
+                <div class="stage-label">新人入社</div>
+                <div class="stage-count"><span id="funnel-n1">20</span> 人</div>
+              </div>
+            </div>
+
+            <div class="funnel-arrow">↓ 第二期留存</div>
+
+            <div class="funnel-stage">
+              <div class="stage-num">02</div>
+              <div class="stage-bar">
+                <div class="stage-bar-fill" id="funnel-bar-2"></div>
+              </div>
+              <div class="stage-info">
+                <div class="stage-label">通過第一期</div>
+                <div class="stage-count"><span id="funnel-n2">5.0</span> 人</div>
+              </div>
+            </div>
+
+            <div class="funnel-arrow">↓ 長期留存</div>
+
+            <div class="funnel-stage">
+              <div class="stage-num">03</div>
+              <div class="stage-bar">
+                <div class="stage-bar-fill" id="funnel-bar-3"></div>
+              </div>
+              <div class="stage-info">
+                <div class="stage-label">長期留下</div>
+                <div class="stage-count"><span id="funnel-n3">1.0</span> 人</div>
+              </div>
+            </div>
+
+            <div class="funnel-arrow">↓ 達成資格機率</div>
+
+            <div class="funnel-stage final">
+              <div class="stage-num">04</div>
+              <div class="stage-bar">
+                <div class="stage-bar-fill final-fill" id="funnel-bar-4"></div>
+              </div>
+              <div class="stage-info">
+                <div class="stage-label">取得社長資格</div>
+                <div class="stage-count accent-color"><span id="funnel-n4">0.85</span> 人</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="funnel-conclusion">
+            <div class="conclusion-grid">
+              <div class="conclusion-item">
+                <div class="conclusion-label">每位社長候選人需要的新人投入</div>
+                <div class="conclusion-big">
+                  <span id="need-newcomers">24</span>
+                  <span class="unit">位新人</span>
+                </div>
+                <div class="conclusion-sub">才能孕育出 1 位社長</div>
+              </div>
+              <div class="conclusion-item">
+                <div class="conclusion-label">每期 20 新人 → 可產出</div>
+                <div class="conclusion-big">
+                  <span id="produce-per-term">0.83</span>
+                  <span class="unit">位/期</span>
+                </div>
+                <div class="conclusion-sub">≈ 每 <span id="every-year">1.2</span> 年產出 1 位</div>
+              </div>
+              <div class="conclusion-item">
+                <div class="conclusion-label">90 人社團中</div>
+                <div class="conclusion-big">
+                  <span id="pool-size">3-4</span>
+                  <span class="unit">位</span>
+                </div>
+                <div class="conclusion-sub">同時具備社長資格的人</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-section" style="border-color: var(--accent); box-shadow: 6px 6px 0 var(--accent);">
+        <div class="panel-header" style="background: var(--accent);">
+          <span>⚠ SUPPLY VS DEMAND · 供需平衡分析</span>
+          <span>04</span>
+        </div>
+        <div class="balance-body">
+
+          <div class="balance-intro">
+            <strong>關鍵限制:</strong>社長當選後便<u>不再列入候選池</u>,等於這位人選「用過就沒了」。
+            一年兩期 = 一年要消耗 <strong style="color:var(--accent)">2 位</strong> 社長人選。
+            我們的人才漏斗,真的供得起這個消耗速度嗎?
+          </div>
+
+          <!-- 供需對比 -->
+          <div class="balance-compare">
+            <div class="balance-side supply">
+              <div class="balance-tag">SUPPLY · 供給</div>
+              <div class="balance-headline">每年產出</div>
+              <div class="balance-number"><span id="supply-yr">1.84</span></div>
+              <div class="balance-unit">位社長候選人 / 年</div>
+              <div class="balance-detail">
+                每期新人 <span id="b-newcomers">20</span> 位<br>
+                × 留存與達標機率 ≈ <span id="b-per-term">0.92</span>/期<br>
+                × 一年兩期 = <span id="b-yearly">1.84</span>/年
+              </div>
+            </div>
+
+            <div class="balance-vs">VS</div>
+
+            <div class="balance-side demand">
+              <div class="balance-tag">DEMAND · 消耗</div>
+              <div class="balance-headline">每年消耗</div>
+              <div class="balance-number">2.00</div>
+              <div class="balance-unit">位社長 / 年</div>
+              <div class="balance-detail">
+                每期選出 1 位社長<br>
+                當選後 = 不再列入候選池<br>
+                一年兩期 × 1 = <strong style="color:var(--accent)">2 位/年</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- 缺口 -->
+          <div class="balance-gap" id="gap-card">
+            <div class="gap-label">每年淨差</div>
+            <div class="gap-number" id="gap-num">-0.16</div>
+            <div class="gap-status" id="gap-status">系統長期短缺</div>
+            <div class="gap-meaning" id="gap-meaning">
+              候選池會以每年 0.16 位的速度縮減,約 6 年後池子會見底。
+            </div>
+          </div>
+
+          <!-- 10 年模擬 -->
+          <div class="pool-projection">
+            <div class="projection-title">候選池 10 年走勢模擬</div>
+            <div class="projection-sub">
+              起始假設:資深社友池中有 <strong>4 位</strong>具備資格者(預估值)
+            </div>
+            <div class="projection-chart" id="projection-chart">
+              <!-- 動態渲染 -->
+            </div>
+            <div class="projection-legend">
+              <div class="leg-item"><div class="leg-dot pool"></div>累積候選池</div>
+              <div class="leg-item"><div class="leg-dot in"></div>當年新增</div>
+              <div class="leg-item"><div class="leg-dot out"></div>當年消耗</div>
+            </div>
+          </div>
+
+          <!-- 改善建議 -->
+          <div class="solutions">
+            <div class="solutions-title">⚡ 達到收支平衡需要的調整</div>
+            <div class="solutions-grid">
+              <div class="solution-card">
+                <div class="sol-label">方案 A · 增加新人</div>
+                <div class="sol-value">每期需招<br><strong id="sol-newcomers">22</strong> 位新人</div>
+                <div class="sol-note">+<span id="sol-newcomers-delta">2</span> 位即達平衡</div>
+              </div>
+              <div class="solution-card">
+                <div class="sol-label">方案 B · 提高留存</div>
+                <div class="sol-value">第一期留存率需達<br><strong id="sol-retain">27</strong> %</div>
+                <div class="sol-note">目前 <span id="sol-retain-now">25</span>%,+<span id="sol-retain-delta">2</span> 個百分點</div>
+              </div>
+              <div class="solution-card">
+                <div class="sol-label">方案 C · 拉長任期</div>
+                <div class="sol-value">社長改為<br><strong>1 年制</strong></div>
+                <div class="sol-note">消耗減半 → 大幅緩解</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="timeline-section">
+        <div class="panel-header">
+          <span>TYPICAL TIMELINE · 一般路徑時間軸</span>
+          <span>05</span>
+        </div>
+        <div class="timeline-body">
+          <div class="legend">
+            <div class="legend-item"><div class="legend-swatch swatch-new"></div>新人(無資格)</div>
+            <div class="legend-item"><div class="legend-swatch swatch-member"></div>一般社友</div>
+            <div class="legend-item"><div class="legend-swatch swatch-leader"></div>組長</div>
+            <div class="legend-item"><div class="legend-swatch swatch-vp"></div>副社長</div>
+            <div class="legend-item"><div class="legend-swatch swatch-eligible"></div>取得社長資格</div>
+          </div>
+          <div class="timeline-track" id="timeline">
+            <!-- dynamically rendered -->
+          </div>
+        </div>
+      </div>
+
+      <div class="scenarios" id="scenarios-section">
+        <div class="scenario-card lucky">
+          <span class="scenario-tag">FASTEST · 最快路徑</span>
+          <div class="scenario-title">天選之人</div>
+          <div class="scenario-duration"><span id="s-fast-y">2.5</span><span class="yr">年 / <span id="s-fast-t">5</span>期</span></div>
+          <p class="scenario-desc">
+            第二期立刻被選為組長,第三期續任,第四期已滿足「連續 3 期 + 2 次組長」條件。社長剛好缺人、表現亮眼才會這樣。
+          </p>
+        </div>
+
+        <div class="scenario-card average">
+          <span class="scenario-tag">AVERAGE · 一般路徑</span>
+          <div class="scenario-title">穩健派</div>
+          <div class="scenario-duration"><span id="s-avg-y">5.0</span><span class="yr">年 / <span id="s-avg-t">10</span>期</span></div>
+          <p class="scenario-desc">
+            第二期沒被選上,在社內熬幾期才當上第一次組長。等到變資深後,第二次資歷可能直接是<strong style="color:var(--teal)">副社長</strong>。多數能走到資格的社友屬於這條路徑。
+          </p>
+        </div>
+
+        <div class="scenario-card slow">
+          <span class="scenario-tag">SLOWEST · 較慢路徑</span>
+          <div class="scenario-title">長期耕耘</div>
+          <div class="scenario-duration"><span id="s-slow-y">8.0</span><span class="yr">年 / <span id="s-slow-t">16</span>期</span></div>
+          <p class="scenario-desc">
+            一直當基層社友,組長/副社長都很少輪到,且因「連續 3 期」的條件,中間若請假/斷期需重新累積。能堅持下來的人鳳毛麟角。
+          </p>
+        </div>
+      </div>
+
+      <div class="notes" style="margin-top: 24px;">
+        <div class="notes-title">計算邏輯說明</div>
+        本試算採用 <strong>蒙地卡羅模擬 (Monte Carlo)</strong>,跑 5,000 次新社友的歷程,每期依照上方機率參數判斷:
+        是否被指派為<strong>組長</strong>或(資深後)<strong>副社長</strong>,直到累計「連續 3 期 + 2 次組長以上資歷」為止。
+        結果為條件成立者的時間分佈統計 (中位數、P10 最快、P90 最慢)。<br><br>
+        ※ 副社長算「組長以上」資歷,但通常只發生在第 4 期之後(資深者)。<br>
+        ※ 本模型 <strong>假設社友持續留在社內</strong>,中途流失者不計入。實際上 90 人中能走到社長資格的,
+        依留存率推算每年只有 <strong><span id="r-eligible-pct">1.25</span>%</strong> 的人會達成。
+      </div>
+
+    </div>
   </div>
 
-  <!-- ========================================== -->
-  <!-- MODE 1: 由能力出發（左／預設） -->
-  <!-- ========================================== -->
-  <section class="section active" id="section-self">
-    <div class="panel">
-      <span class="panel-label">SELF-DISCOVERY / 問題引導式分析</span>
-      <h2>透過問題，發掘你的能力輪廓</h2>
-      <p class="hint">不用直接打分，只要回答以下關於你自己的問題，系統會自動推算你三大能力的分布，並推薦適合的職業方向。</p>
-
-      <!-- Q1 學校與科系 -->
-      <div class="question-block">
-        <div class="question-num">Q.01 / 教育背景</div>
-        <div class="question-title">你的學校與科系是什麼？</div>
-        <div class="question-hint">學校類型與科系領域，會反映你的職業基礎與專業傾向。</div>
-        <div class="q-row">
-          <input type="text" class="q-input" id="q-school" placeholder="例如：台北大學、明志科大、社區大學..." />
-          <input type="text" class="q-input" id="q-major" placeholder="例如：機械工程、企業管理、護理..." />
-        </div>
-        <div style="margin-top:8px">
-          <div class="question-hint" style="margin-bottom:6px">你所就讀的學制屬於：</div>
-          <div class="q-options" data-question="schoolType">
-            <button class="q-option" data-val="vocational">技職體系 / 高職</button>
-            <button class="q-option" data-val="university">一般大學</button>
-            <button class="q-option" data-val="tech-uni">科技大學</button>
-            <button class="q-option" data-val="graduate">研究所</button>
-            <button class="q-option" data-val="other">其他 / 自學</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Q2 社團 -->
-      <div class="question-block">
-        <div class="question-num">Q.02 / 社團經驗</div>
-        <div class="question-title">你參加過什麼社團？擔任什麼角色？</div>
-        <div class="question-hint">社團類型反映興趣方向，擔任的角色反映你的軟實力（領導、協作、執行）。</div>
-        <input type="text" class="q-input" id="q-club" placeholder="例如：吉他社、攝影社、辯論社、學生會..." />
-        <div style="margin-top:8px">
-          <div class="question-hint" style="margin-bottom:6px">在社團裡，你通常扮演的角色：</div>
-          <div class="q-options" data-question="clubRole">
-            <button class="q-option" data-val="leader">幹部 / 領導者</button>
-            <button class="q-option" data-val="core">核心成員 / 企劃</button>
-            <button class="q-option" data-val="executor">執行成員</button>
-            <button class="q-option" data-val="participant">一般參與</button>
-            <button class="q-option" data-val="none">沒有參加</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Q3 興趣（可多筆） -->
-      <div class="question-block">
-        <div class="question-num">Q.03 / 日常興趣</div>
-        <div class="question-title">你平常的興趣有哪些？在興趣裡扮演什麼角色？</div>
-        <div class="question-hint">不同興趣與不同角色，會反映出不同的能力組合。可以新增多個興趣，越詳細越好。</div>
-        <div id="hobbyList"></div>
-        <button type="button" class="add-hobby-btn" onclick="addHobby()">+ 新增一個興趣</button>
-      </div>
-
-      <!-- Q4 運動 -->
-      <div class="question-block">
-        <div class="question-num">Q.04 / 運動習慣</div>
-        <div class="question-title">你是否有規律運動的習慣？</div>
-        <div class="question-hint">運動反映體力、協調性、自律性——這些都是雇主重視的軟實力。</div>
-        <div class="q-options" data-question="sport">
-          <button class="q-option" data-val="team">有，主要是團隊運動（如籃球、足球、排球）</button>
-          <button class="q-option" data-val="individual">有，主要是個人運動（如跑步、健身、游泳）</button>
-          <button class="q-option" data-val="competitive">有，且有比賽 / 隊伍經驗</button>
-          <button class="q-option" data-val="occasional">偶爾運動，沒有固定習慣</button>
-          <button class="q-option" data-val="none">幾乎不運動</button>
-        </div>
-      </div>
-
-      <!-- Q5 組織經驗 -->
-      <div class="question-block">
-        <div class="question-num">Q.05 / 組織與團隊</div>
-        <div class="question-title">你是否有參加過正式組織或團隊？</div>
-        <div class="question-hint">包含工讀、志工、實習、宗教團體、興趣社群等任何需要與他人協作的場合。</div>
-        <div class="q-options" data-question="organization">
-          <button class="q-option" data-val="leader-large">有，並擔任過 10 人以上團體的負責人</button>
-          <button class="q-option" data-val="leader-small">有，並擔任過小型團隊（&lt;10 人）的負責人</button>
-          <button class="q-option" data-val="member">有，作為團隊成員參與</button>
-          <button class="q-option" data-val="volunteer">有，主要是志工或服務性質</button>
-          <button class="q-option" data-val="none">幾乎沒有</button>
-        </div>
-      </div>
-
-      <!-- Q6 語言證照 -->
-      <div class="question-block">
-        <div class="question-num">Q.06 / 語言與證照</div>
-        <div class="question-title">你的英文程度與其他證照？</div>
-        <div class="question-hint">語言與證照是「可驗證的硬實力」，澳洲移民與就業特別看重。</div>
-        <div style="margin-bottom:10px">
-          <div class="question-hint" style="margin-bottom:6px">英文程度：</div>
-          <div class="q-options" data-question="english">
-            <button class="q-option" data-val="native">母語級 / IELTS 8+</button>
-            <button class="q-option" data-val="advanced">流利 / IELTS 6.5–7.5、TOEIC 800+</button>
-            <button class="q-option" data-val="intermediate">中等 / IELTS 5–6、TOEIC 600–800</button>
-            <button class="q-option" data-val="basic">基礎 / 日常會話</button>
-            <button class="q-option" data-val="weak">弱 / 看得懂但不太會說</button>
-          </div>
-        </div>
-        <div>
-          <div class="question-hint" style="margin-bottom:6px">你有取得以下哪類證照？（可複選，點一次選取、再點一次取消）</div>
-          <div class="q-options multi" data-question="certs">
-            <button class="q-option" data-val="tech">技術證照（如焊接、堆高機、急救員、廚師、美容師）</button>
-            <button class="q-option" data-val="professional">專業執照（如會計師、護理師、教師、律師）</button>
-            <button class="q-option" data-val="it">資訊類（如 AWS、Google、Cisco、程式語言認證）</button>
-            <button class="q-option" data-val="language">語言類（除英文外的第二外語）</button>
-            <button class="q-option" data-val="finance">金融類（如證券、保險、財務分析）</button>
-            <button class="q-option" data-val="none">目前沒有</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Q7 工作 / 實習經驗 -->
-      <div class="question-block">
-        <div class="question-num">Q.07 / 工作或實習經驗</div>
-        <div class="question-title">你最近的一份工作或實習是？</div>
-        <div class="question-hint">即使是兼職、打工或實習，都是真實的職場經驗。</div>
-        <input type="text" class="q-input" id="q-job" placeholder="例如：餐廳外場、行政助理、學校實習、家教..." />
-        <div style="margin-top:8px">
-          <div class="question-hint" style="margin-bottom:6px">這份經驗持續多久：</div>
-          <div class="q-options" data-question="jobLength">
-            <button class="q-option" data-val="long">一年以上</button>
-            <button class="q-option" data-val="medium">3 個月 ~ 1 年</button>
-            <button class="q-option" data-val="short">3 個月以下（短期 / 暑期）</button>
-            <button class="q-option" data-val="none">沒有相關經驗</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="action-bar">
-        <button class="btn secondary" onclick="resetSelf()">重設</button>
-        <button class="btn" onclick="analyzeSelf()">產出分析報告 →</button>
-      </div>
-    </div>
-
-    <!-- 結果 -->
-    <div class="result-board" id="resultBoard">
-      <div class="result-header">
-        <div class="eyebrow">Diagnostic Report</div>
-        <h2>你的能力分析報告</h2>
-      </div>
-
-      <div class="profile-grid">
-        <div class="radar-wrap">
-          <h3>能力分布圖</h3>
-          <svg id="radarChart" viewBox="0 0 400 400" style="width:100%;height:auto;"></svg>
-        </div>
-        <div class="score-summary">
-          <h3>三支柱推算分數</h3>
-          <div id="scoreSummary"></div>
-          <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--rule);font-family:'Fraunces',serif;font-style:italic;font-size:13px;color:var(--ink-soft);line-height:1.6;">
-            <span id="overallComment"></span>
-          </div>
-        </div>
-      </div>
-
-      <div class="evidence-section">
-        <h3>分析證據摘要</h3>
-        <p class="hint">系統如何從你的回答推算出能力的——這是分數的依據。</p>
-        <div class="evidence-list" id="evidenceList"></div>
-      </div>
-
-      <div class="recommendation-section">
-        <h3>推薦適合你的職業方向</h3>
-        <p class="hint">根據你的能力推算結果，這些職業與你的能力組合契合度較高。</p>
-        <div id="careerList"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========================================== -->
-  <!-- MODE 2: 由行業出發（右） -->
-  <!-- ========================================== -->
-  <section class="section" id="section-industry">
-    <div class="panel">
-      <span class="panel-label">INPUT / 行業關鍵字</span>
-      <h2>輸入你想了解的行業</h2>
-      <p class="hint">輸入後將為你拆解該行業所需的三大能力支柱（職業專業、通用核心、軟實力）。</p>
-
-      <div class="input-row">
-        <input type="text" id="industryInput" placeholder="例如：金屬工程、會計、軟體開發、護理師..." />
-        <button class="btn" onclick="analyzeIndustry()">開始分析 →</button>
-      </div>
-
-      <div class="preset-tags">
-        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#666;letter-spacing:0.15em;align-self:center;">QUICK PICK:</span>
-        <button class="preset-tag" onclick="quickAnalyze('金屬工程')">金屬工程</button>
-        <button class="preset-tag" onclick="quickAnalyze('會計')">會計</button>
-        <button class="preset-tag" onclick="quickAnalyze('軟體開發')">軟體開發</button>
-        <button class="preset-tag" onclick="quickAnalyze('護理師')">護理師</button>
-        <button class="preset-tag" onclick="quickAnalyze('行銷企劃')">行銷企劃</button>
-        <button class="preset-tag" onclick="quickAnalyze('餐飲服務')">餐飲服務</button>
-        <button class="preset-tag" onclick="quickAnalyze('幼教老師')">幼教老師</button>
-      </div>
-    </div>
-
-    <div class="industry-result" id="industryResult">
-      <div class="industry-header">
-        <div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;color:#666;margin-bottom:6px;">REPORT FOR</div>
-          <div class="industry-name" id="industryName">—</div>
-        </div>
-        <div class="industry-meta" id="industryMeta">PILLARS: 3 · ITEMS: —</div>
-      </div>
-
-      <div class="pillar-grid" id="pillarGrid"></div>
-    </div>
-  </section>
-
-  <footer class="footer">
-    <div>BASED ON AUSTRALIAN SKILLS CLASSIFICATION (ASC) · THREE-PILLAR MODEL</div>
-    <div style="margin-top:4px;">SPECIALIST TASKS · CORE COMPETENCIES · EMPLOYABILITY SKILLS</div>
-  </footer>
 </div>
 
 <script>
-/* =================================================
-   DATA: 行業 → 三大能力
-   ================================================= */
-const INDUSTRY_DB = {
-  "金屬工程": {
-    en: "Metal Engineering / Welding",
-    specialist: ["看懂 3D 施工圖與工程圖", "防火門結構銲接技術", "金屬切割與成型操作", "焊縫品質檢測（NDT）", "材料選用與規格判讀"],
-    core: ["數位參與（CAD 工具操作）", "算術能力（公差計算）", "問題解決（現場排除故障）", "規劃與組織（工序安排）", "閱讀能力（技術規範）"],
-    soft: ["細心與專注（安全優先）", "抗壓性（高溫高壓環境）", "團隊默契（與其他工種協作）", "職業道德（品質責任）"]
-  },
-  "會計": {
-    en: "Accounting",
-    specialist: ["編製財務報表", "稅務申報與規劃", "成本會計分析", "ERP 系統操作（如 Xero、MYOB）", "審計與內控流程"],
-    core: ["算術與數字敏感度", "閱讀能力（法規條文）", "寫作能力（報告撰寫）", "問題解決（帳務異常追查）", "數位參與（Excel 進階）"],
-    soft: ["誠信與職業道德", "細心與責任感", "保密意識", "客戶溝通同理心"]
-  },
-  "軟體開發": {
-    en: "Software Development",
-    specialist: ["程式設計（Python/JavaScript 等）", "資料庫設計與查詢", "版本控制（Git）", "系統架構設計", "API 整合與測試"],
-    core: ["問題解決（除錯思維）", "學習能力（技術迭代快）", "閱讀能力（英文文件）", "寫作能力（技術文件）", "邏輯與算術"],
-    soft: ["耐心與抗壓性", "團隊協作（Scrum）", "持續好奇心", "面對失敗的韌性"]
-  },
-  "護理師": {
-    en: "Registered Nurse",
-    specialist: ["臨床評估與護理技術", "藥物管理與給藥", "傷口照護與處置", "病歷紀錄與護理計畫", "急救與生命徵象判讀"],
-    core: ["口語溝通（病患與家屬）", "寫作能力（護理紀錄）", "問題解決（臨床判斷）", "規劃與組織（多病患排程）", "團隊合作"],
-    soft: ["同理心與情緒勞動", "抗壓性（輪班與壓力）", "職業道德（病患安全）", "文化適應力（多元背景）"]
-  },
-  "行銷企劃": {
-    en: "Marketing & Planning",
-    specialist: ["市場研究與消費者分析", "社群與內容行銷操作", "廣告投放（Google/Meta Ads）", "品牌定位策略", "數據分析（GA、SQL 基礎）"],
-    core: ["寫作能力（文案）", "口語溝通（簡報）", "主動與創新", "規劃與組織（活動執行）", "數位參與"],
-    soft: ["同理心（洞察受眾）", "創意與好奇心", "抗壓性（緊湊期程）", "團隊協作"]
-  },
-  "餐飲服務": {
-    en: "Food & Beverage Service",
-    specialist: ["餐點知識與酒水搭配", "POS 點餐系統操作", "桌邊服務技巧", "食品安全衛生（HACCP）", "備餐流程與出餐節奏"],
-    core: ["口語溝通（接待顧客）", "算術能力（結帳找錢）", "團隊合作（前後場協調）", "問題解決（客訴處理）"],
-    soft: ["親切與情緒控制", "抗壓性（高峰期）", "細心與整潔習慣", "文化適應力（多元客群）"]
-  },
-  "幼教老師": {
-    en: "Early Childhood Educator",
-    specialist: ["兒童發展理論與評估", "課程設計與教案編寫", "幼兒安全與緊急處置", "親師溝通技巧", "教具運用與情境教學"],
-    core: ["口語溝通（孩童與家長）", "寫作能力（觀察紀錄）", "規劃與組織（活動編排）", "問題解決（行為輔導）", "學習能力"],
-    soft: ["耐心與同理心", "情緒穩定（高互動）", "創意與遊戲精神", "職業道德與愛心"]
-  },
-  "_default": {
-    en: "Generic Industry Profile",
-    specialist: ["（請依該行業填入）行業特定技術 1", "（請依該行業填入）專業證照或執照", "（請依該行業填入）行業專用工具操作", "（請依該行業填入）流程與規範掌握"],
-    core: ["學習能力", "閱讀與寫作能力", "口語溝通", "算術能力", "數位參與", "問題解決", "規劃與組織", "團隊合作", "主動與創新"],
-    soft: ["同理心", "抗壓性", "文化適應力", "職業道德與責任感"]
-  }
-};
+// ============ 模擬邏輯 ============
+function simulate(params, runs = 5000) {
+  const results = [];
+  const pathStats = { leaderOnly: 0, vpInvolved: 0 };
 
-/* =================================================
-   DATA: 推算規則（answers → 三大能力加分）
-   每個答案會給三大能力加分（specialist / core / soft）
-   ================================================= */
-const SCORING_RULES = {
-  schoolType: {
-    "vocational":   { specialist:+1.5, core:+0.5, soft:0,    evidence:"技職體系：你受過明確的職業專業訓練，這是硬實力的直接來源。" },
-    "university":   { specialist:+0.5, core:+1.5, soft:+0.5, evidence:"一般大學：你在通用能力（閱讀、寫作、思辨）的訓練上有優勢。" },
-    "tech-uni":     { specialist:+1.2, core:+1.2, soft:+0.3, evidence:"科技大學：兼具專業技術訓練與學術通用能力，是均衡的組合。" },
-    "graduate":     { specialist:+1.0, core:+2.0, soft:+0.5, evidence:"研究所：你的研究、寫作與問題分析能力明顯較強。" },
-    "other":        { specialist:+0.3, core:+0.8, soft:+0.5, evidence:"自學或其他學制：你具備自主學習的能力，這是雇主越來越重視的特質。" }
-  },
-  clubRole: {
-    "leader":       { specialist:0,    core:+1.2, soft:+2.0, evidence:"曾任社團幹部：實際領導經驗，是規劃、溝通與情緒管理的綜合練習場。" },
-    "core":         { specialist:0,    core:+1.0, soft:+1.2, evidence:"擔任核心成員 / 企劃：你習慣主動承擔，並具備一定的組織能力。" },
-    "executor":     { specialist:0,    core:+0.5, soft:+0.8, evidence:"執行成員：你能可靠地完成被指派的任務，是團隊穩定的基石。" },
-    "participant":  { specialist:0,    core:+0.2, soft:+0.4, evidence:"一般參與：仍有團體經驗，但較少主動領導機會。" },
-    "none":         { specialist:0,    core:0,    soft:0,    evidence:"沒有社團經驗：建議透過工作或志工來補上團體協作的歷練。" }
-  },
-  sport: {
-    "team":         { specialist:0,    core:+0.5, soft:+1.5, evidence:"團隊運動習慣：協調性、責任感、團隊默契，這些都是雇主特別看重的軟實力。" },
-    "individual":   { specialist:0,    core:+0.3, soft:+1.0, evidence:"個人運動習慣：反映自律、毅力與目標管理能力。" },
-    "competitive":  { specialist:+0.5, core:+0.5, soft:+2.0, evidence:"有比賽 / 隊伍經驗：抗壓性、勝負心、策略思考都已被實戰打磨過。" },
-    "occasional":   { specialist:0,    core:+0.1, soft:+0.4, evidence:"偶爾運動：體力與協調性有基礎，但尚未轉化為心理素質的鍛鍊。" },
-    "none":         { specialist:0,    core:0,    soft:-0.3, evidence:"沒有運動習慣：建議培養，運動帶來的紀律性會直接影響工作表現。" }
-  },
-  organization: {
-    "leader-large": { specialist:0,    core:+2.0, soft:+2.0, evidence:"領導 10 人以上團體：你的規劃、溝通與跨人協調能力已具備管理職的雛形。" },
-    "leader-small": { specialist:0,    core:+1.3, soft:+1.5, evidence:"領導小型團隊：你具備直接管理他人的實戰經驗，這在求職時是強力背書。" },
-    "member":       { specialist:0,    core:+0.6, soft:+1.0, evidence:"團隊成員經驗：你熟悉組織運作的眉角，知道如何融入與貢獻。" },
-    "volunteer":    { specialist:0,    core:+0.4, soft:+1.4, evidence:"志工 / 服務經驗：你的同理心與服務熱忱會在面試中明顯加分。" },
-    "none":         { specialist:0,    core:0,    soft:0,    evidence:"沒有組織經驗：建議透過實習或志工累積，這是進入職場前的關鍵練習。" }
-  },
-  english: {
-    "native":       { specialist:+1.0, core:+2.0, soft:+0.5, evidence:"英文母語級：在跨國環境中具備直接競爭力，海外職業大門已對你打開。" },
-    "advanced":     { specialist:+0.5, core:+1.5, soft:+0.3, evidence:"英文流利（IELTS 6.5+）：達到澳洲技術移民與多數國際職位的門檻。" },
-    "intermediate": { specialist:+0.2, core:+0.8, soft:+0.2, evidence:"英文中等：日常使用無虞，但專業場合仍有進步空間。" },
-    "basic":        { specialist:0,    core:+0.3, soft:0,    evidence:"英文基礎：建議優先提升，這是跨入國際職場最關鍵的單一變數。" },
-    "weak":         { specialist:0,    core:0,    soft:0,    evidence:"英文較弱：在台灣本地職場影響有限，但若考慮海外發展應即刻補強。" }
-  },
-  certs: {
-    "tech":         { specialist:+1.5, core:+0.2, soft:0,    evidence:"持有技術證照：這是「可驗證的職業專業」，履歷上的硬實力證明。" },
-    "professional": { specialist:+2.0, core:+0.5, soft:+0.3, evidence:"持有專業執照：你已通過國家級門檻，職業專業力位於該領域上游。" },
-    "it":           { specialist:+1.2, core:+1.0, soft:0,    evidence:"持有資訊類證照：在 AI 與數位轉型的時代，這是極具市場價值的技能。" },
-    "language":     { specialist:+0.3, core:+1.0, soft:+0.5, evidence:"持有第二外語證照：跨文化能力是澳洲多元職場的稀缺特質。" },
-    "finance":      { specialist:+1.5, core:+0.8, soft:0,    evidence:"持有金融類證照：在會計、財務、保險業具備明確進入門檻。" },
-    "none":         { specialist:0,    core:0,    soft:0,    evidence:"目前沒有證照：建議鎖定一張與目標職業相關的證照作為起步。" }
-  },
-  jobLength: {
-    "long":         { specialist:+1.5, core:+1.0, soft:+1.5, evidence:"一年以上工作經驗：你已掌握該職位的完整工作節奏，是職場熟手。" },
-    "medium":       { specialist:+0.8, core:+0.6, soft:+0.8, evidence:"3 個月 ~ 1 年經驗：你已熟悉職場文化，並具備基本的職業判斷力。" },
-    "short":        { specialist:+0.3, core:+0.3, soft:+0.4, evidence:"短期 / 暑期經驗：你已踏出第一步，知道職場與校園的差別。" },
-    "none":         { specialist:0,    core:0,    soft:0,    evidence:"尚無工作經驗：建議透過實習或兼職累積，職場直覺是書本學不到的。" }
-  },
-  // 興趣角色 → 加分
-  hobbyRole: {
-    "creator":      { specialist:+0.8, core:+0.5, soft:+0.5, evidence:"作為「創作者 / 主導者」：你擁有完成作品的執行力，這是專業力的雛形。" },
-    "performer":    { specialist:+0.5, core:+0.3, soft:+1.0, evidence:"作為「表演者 / 展示者」：你不怕被看見，這是業務與服務職的強項。" },
-    "organizer":    { specialist:0,    core:+1.2, soft:+0.8, evidence:"作為「組織者 / 召集人」：你會把興趣變成活動，組織與規劃能力突出。" },
-    "learner":      { specialist:+0.3, core:+0.8, soft:+0.3, evidence:"作為「學習者 / 鑽研者」：你享受深入研究，是研究型職位的好人選。" },
-    "collaborator": { specialist:0,    core:+0.5, soft:+1.0, evidence:"作為「協作者 / 配合者」：你是團隊裡讓事情順利的人，雖低調但關鍵。" },
-    "consumer":     { specialist:0,    core:+0.1, soft:+0.2, evidence:"作為「欣賞者 / 消費者」：你對該領域有興趣，但尚未轉化為主動投入。" }
-  }
-};
+  for (let i = 0; i < runs; i++) {
+    let consecutive = 1;            // 連續期數 (第一期已算)
+    let qualifyCount = 0;            // 累計擔任組長/副社長次數
+    let lastRole = 'new';            // 'new' | 'member' | 'leader' | 'vp'
+    let hadVP = false;
+    let eligible = false;
 
-/* =================================================
-   DATA: 職業推薦庫
-   ================================================= */
-const CAREER_DB = [
-  { name: "資深技術專業人員", en: "Senior Technical Specialist", weights: [5, 3, 2], desc: "適合職業專業極強、深耕單一領域的人。例如：銲接技師、會計師、外科醫師。" },
-  { name: "專案經理 / 顧問", en: "Project Manager / Consultant", weights: [3, 5, 4], desc: "需要跨領域整合，重視組織、規劃與溝通能力。專業是基礎，但通用能力才是核心。" },
-  { name: "教育與培訓人員", en: "Educator / Trainer", weights: [3, 4, 5], desc: "高度依賴同理心、溝通與耐心。專業知識重要，但軟實力決定成敗。" },
-  { name: "創業者 / 自由工作者", en: "Entrepreneur / Freelancer", weights: [4, 4, 4], desc: "三項能力均衡發展。專業要能變現、通用能力要能自我管理、軟實力要能維持客戶關係。" },
-  { name: "研究員 / 分析師", en: "Researcher / Analyst", weights: [4, 5, 2], desc: "重視深度專業與強大的分析、寫作、邏輯能力。軟實力相對次要。" },
-  { name: "客戶服務 / 業務", en: "Customer Service / Sales", weights: [2, 4, 5], desc: "軟實力是命脈。同理心、抗壓性、情緒穩定遠比硬技能重要。" },
-  { name: "助理 / 行政支援", en: "Administrative Support", weights: [2, 4, 3], desc: "通用能力（組織、溝通、數位）為主，是進入職場的良好起點。" },
-  { name: "創意 / 設計工作者", en: "Creative / Designer", weights: [4, 3, 4], desc: "需要專業技藝、主動創新，加上與客戶協作的軟實力。" },
-  { name: "照護 / 社工", en: "Care / Social Worker", weights: [3, 4, 5], desc: "軟實力決定一切。同理心、文化適應、情緒勞動是核心。" },
-  { name: "技術與管理雙軌", en: "Technical Lead / Manager", weights: [5, 5, 4], desc: "三項都需要高分。是資深技術人才的常見發展路徑。" }
-];
+    // 模擬最多 40 期 (20 年)
+    for (let term = 2; term <= 40; term++) {
+      consecutive++;
 
-/* =================================================
-   STATE
-   ================================================= */
-const answers = {};   // {questionKey: value 或 [values]}
-const hobbies = [];   // [{name, role}]
+      // 判定這一期角色
+      let role;
+      const isSenior = (term >= 4 && qualifyCount >= 1);  // 資深判定:第 4 期且有當過組長
 
-/* =================================================
-   MODE 切換
-   ================================================= */
-const modeButtons = document.querySelectorAll('.mode-btn');
-const sections = document.querySelectorAll('.section');
-modeButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const mode = btn.dataset.mode;
-    modeButtons.forEach(b => b.classList.toggle('active', b === btn));
-    sections.forEach(s => s.classList.toggle('active', s.id === 'section-' + mode));
-  });
-});
-
-/* =================================================
-   問題選項點選邏輯（單選 / 複選）
-   ================================================= */
-document.querySelectorAll('.q-options').forEach(group => {
-  const key = group.dataset.question;
-  const isMulti = group.classList.contains('multi');
-  if (isMulti) answers[key] = [];
-
-  group.querySelectorAll('.q-option').forEach(opt => {
-    opt.addEventListener('click', () => {
-      const val = opt.dataset.val;
-      if (isMulti) {
-        // 「目前沒有」與其他選項互斥
-        if (val === 'none') {
-          group.querySelectorAll('.q-option').forEach(o => o.classList.remove('selected'));
-          opt.classList.add('selected');
-          answers[key] = ['none'];
+      if (lastRole === 'leader' || lastRole === 'vp') {
+        // 上期是組長/副社長 → 高機率續任(可能升副社長)
+        if (isSenior && Math.random() < params.prob4) {
+          role = 'vp';  // 資深者升副社長
+        } else if (Math.random() < params.prob2) {
+          role = 'leader';  // 續任組長
         } else {
-          group.querySelector('.q-option[data-val="none"]')?.classList.remove('selected');
-          answers[key] = answers[key].filter(v => v !== 'none');
-          opt.classList.toggle('selected');
-          if (opt.classList.contains('selected')) {
-            answers[key].push(val);
-          } else {
-            answers[key] = answers[key].filter(v => v !== val);
-          }
+          role = 'member';
         }
       } else {
-        group.querySelectorAll('.q-option').forEach(o => o.classList.toggle('selected', o === opt));
-        answers[key] = val;
+        // 上期沒當 → 用一般機率
+        const baseProb = (term === 2) ? params.prob1 : params.prob3;
+        if (isSenior && Math.random() < params.prob4) {
+          role = 'vp';
+        } else if (Math.random() < baseProb) {
+          role = 'leader';
+        } else {
+          role = 'member';
+        }
       }
-    });
-  });
+
+      // 組長或副社長都算 1 次合格資歷
+      if (role === 'leader' || role === 'vp') {
+        qualifyCount++;
+        if (role === 'vp') hadVP = true;
+      }
+      lastRole = role;
+
+      // 檢查資格:連續 3 期 + 2 次組長/副社長
+      if (consecutive >= 3 && qualifyCount >= 2) {
+        results.push(term);
+        eligible = true;
+        if (hadVP) pathStats.vpInvolved++;
+        else pathStats.leaderOnly++;
+        break;
+      }
+    }
+
+    if (!eligible) {
+      results.push(40);
+    }
+  }
+
+  results.sort((a, b) => a - b);
+  results.pathStats = pathStats;
+  return results;
+}
+
+// 機率:N 期內取得資格
+function probWithinTerms(results, n) {
+  const count = results.filter(r => r <= n).length;
+  return count / results.length;
+}
+
+// 取百分位數
+function percentile(arr, p) {
+  const idx = Math.floor(arr.length * p);
+  return arr[Math.min(idx, arr.length - 1)];
+}
+
+// ============ 渲染 ============
+function getParams() {
+  return {
+    newcomers: +document.getElementById('newcomers').value,
+    retain1: +document.getElementById('retain1').value / 100,
+    retain2: +document.getElementById('retain2').value / 100,
+    prob1: +document.getElementById('prob1').value / 100,
+    prob2: +document.getElementById('prob2').value / 100,
+    prob3: +document.getElementById('prob3').value / 100,
+    prob4: +document.getElementById('prob4').value / 100,
+  };
+}
+
+function update() {
+  const p = getParams();
+
+  // 更新顯示值
+  document.getElementById('v-newcomers').textContent = p.newcomers;
+  document.getElementById('v-retain1').textContent = Math.round(p.retain1 * 100);
+  document.getElementById('v-retain2').textContent = Math.round(p.retain2 * 100);
+  document.getElementById('v-prob1').textContent = Math.round(p.prob1 * 100);
+  document.getElementById('v-prob2').textContent = Math.round(p.prob2 * 100);
+  document.getElementById('v-prob3').textContent = Math.round(p.prob3 * 100);
+  document.getElementById('v-prob4').textContent = Math.round(p.prob4 * 100);
+
+  // 跑模擬
+  const results = simulate(p);
+
+  const median = percentile(results, 0.5);
+  const fast = percentile(results, 0.1);
+  const slow = percentile(results, 0.9);
+
+  // 顯示主要結果 (term 數 → 年數,每期 0.5 年)
+  const termsToShow = median;
+  document.getElementById('r-terms').textContent = termsToShow;
+  document.getElementById('r-years').textContent = (termsToShow * 0.5).toFixed(1);
+
+  document.getElementById('r-fast').textContent = (fast * 0.5).toFixed(1);
+  document.getElementById('r-typical').textContent = (median * 0.5).toFixed(1);
+  document.getElementById('r-slow').textContent = (slow * 0.5).toFixed(1);
+
+  document.getElementById('s-fast-y').textContent = (fast * 0.5).toFixed(1);
+  document.getElementById('s-fast-t').textContent = fast;
+  document.getElementById('s-avg-y').textContent = (median * 0.5).toFixed(1);
+  document.getElementById('s-avg-t').textContent = median;
+  document.getElementById('s-slow-y').textContent = (slow * 0.5).toFixed(1);
+  document.getElementById('s-slow-t').textContent = slow;
+
+  // 機率條
+  const survive1Pct = p.retain1 * 100;
+  const survive2Pct = p.retain1 * p.retain2 * 100;
+  const leader1Pct = p.prob1 * 100;
+
+  document.getElementById('bar-survive1').style.width = survive1Pct + '%';
+  document.getElementById('pct-survive1').textContent = survive1Pct.toFixed(0) + '%';
+
+  document.getElementById('bar-survive2').style.width = survive2Pct + '%';
+  document.getElementById('pct-survive2').textContent = survive2Pct.toFixed(1) + '%';
+
+  document.getElementById('bar-leader1').style.width = leader1Pct + '%';
+  document.getElementById('pct-leader1').textContent = leader1Pct.toFixed(0) + '%';
+
+  const vpPct = p.prob4 * 100;
+  document.getElementById('bar-vp').style.width = vpPct + '%';
+  document.getElementById('pct-vp').textContent = vpPct.toFixed(0) + '%';
+
+  // N 期內取得資格機率
+  const prob3 = probWithinTerms(results, 3) * 100;
+  const prob5 = probWithinTerms(results, 5) * 100;
+  const prob8 = probWithinTerms(results, 8) * 100;
+
+  document.getElementById('bar-elig3').style.width = prob3 + '%';
+  document.getElementById('pct-elig3').textContent = prob3.toFixed(1) + '%';
+  document.getElementById('bar-elig5').style.width = prob5 + '%';
+  document.getElementById('pct-elig5').textContent = prob5.toFixed(1) + '%';
+  document.getElementById('bar-elig8').style.width = prob8 + '%';
+  document.getElementById('pct-elig8').textContent = prob8.toFixed(1) + '%';
+
+  // 整體達成率 (含留存)
+  document.getElementById('r-eligible-pct').textContent =
+    (p.retain1 * p.retain2 * 100).toFixed(2);
+
+  // 渲染時間軸
+  renderTimeline(median, p);
+
+  // 計算人才漏斗
+  renderFunnel(p, results);
+}
+
+function renderFunnel(p, results) {
+  // 各階段人數
+  const n1 = p.newcomers;
+  const n2 = n1 * p.retain1;                    // 通過第一期
+  const n3 = n2 * p.retain2;                    // 長期留下
+
+  // 達成資格的條件機率:「長期留下」的人中,在合理時間(10 期 = 5 年內)達標的比例
+  // 超過 5 年才達標的,實務上多半已淡出社團活動,不會真的參選社長
+  const eligibleIn10 = results.filter(r => r <= 10).length / results.length;
+  const n4 = n3 * eligibleIn10;
+
+  // 比例(以新人為 100%)
+  const pct2 = (n2 / n1) * 100;
+  const pct3 = (n3 / n1) * 100;
+  const pct4 = (n4 / n1) * 100;
+
+  // 渲染各階段
+  document.getElementById('funnel-n1').textContent = n1;
+  document.getElementById('funnel-n2').textContent = n2.toFixed(1);
+  document.getElementById('funnel-n3').textContent = n3.toFixed(2);
+  document.getElementById('funnel-n4').textContent = n4.toFixed(2);
+
+  document.getElementById('funnel-bar-1').style.width = '100%';
+  document.getElementById('funnel-bar-2').style.width = pct2 + '%';
+  document.getElementById('funnel-bar-3').style.width = pct3 + '%';
+  document.getElementById('funnel-bar-4').style.width = pct4 + '%';
+
+  // 結論區
+  const newcomersPerPresident = n4 > 0 ? (n1 / n4) : 999;
+  const producePerTerm = n4;
+  const yearsPerPresident = n4 > 0 ? (0.5 / n4) : 999;
+
+  document.getElementById('need-newcomers').textContent = newcomersPerPresident.toFixed(0);
+  document.getElementById('produce-per-term').textContent = producePerTerm.toFixed(2);
+  document.getElementById('every-year').textContent = yearsPerPresident < 10
+    ? yearsPerPresident.toFixed(1)
+    : yearsPerPresident.toFixed(0);
+
+  // 90 人社團中同時具備社長資格的人數估算
+  // 假設達標後平均還會留任 2-3 期才退場(資深者),所以池子裡有約 2-3 倍的瞬時人數
+  const poolMin = Math.max(1, Math.round(n4 * 3));
+  const poolMax = Math.max(2, Math.round(n4 * 5));
+  document.getElementById('pool-size').textContent =
+    poolMin === poolMax ? poolMin : `${poolMin}-${poolMax}`;
+
+  // 觸發供需平衡計算
+  renderBalance(p, results);
+}
+
+function renderBalance(p, results) {
+  // 供給計算
+  const n1 = p.newcomers;
+  const eligibleIn10 = results.filter(r => r <= 10).length / results.length;
+  const perTerm = n1 * p.retain1 * p.retain2 * eligibleIn10;  // 每期產出
+  const yearlySupply = perTerm * 2;                           // 每年產出
+  const yearlyDemand = 2;                                     // 每年消耗 (2期 × 1社長)
+  const gap = yearlySupply - yearlyDemand;
+
+  // 更新供給端顯示
+  document.getElementById('b-newcomers').textContent = n1;
+  document.getElementById('b-per-term').textContent = perTerm.toFixed(2);
+  document.getElementById('b-yearly').textContent = yearlySupply.toFixed(2);
+  document.getElementById('supply-yr').textContent = yearlySupply.toFixed(2);
+
+  // 缺口顯示
+  const gapNumEl = document.getElementById('gap-num');
+  const gapCardEl = document.getElementById('gap-card');
+  const gapStatusEl = document.getElementById('gap-status');
+  const gapMeaningEl = document.getElementById('gap-meaning');
+
+  gapNumEl.textContent = (gap >= 0 ? '+' : '') + gap.toFixed(2);
+  gapNumEl.className = 'gap-number ' + (gap >= 0 ? 'positive' : 'negative');
+
+  if (gap >= 0.3) {
+    gapCardEl.className = 'balance-gap surplus';
+    gapStatusEl.textContent = '系統健康 · 供過於求';
+    gapMeaningEl.textContent =
+      `候選池會持續累積,每年增加 ${gap.toFixed(2)} 位儲備人選。`;
+  } else if (gap >= -0.1) {
+    gapCardEl.className = 'balance-gap';
+    gapStatusEl.textContent = '勉強打平 · 高風險';
+    gapMeaningEl.textContent =
+      '供需幾乎打平,沒有緩衝。一旦某期招新失利,2-3 年後便會出現候選人荒。';
+  } else if (gap >= -0.5) {
+    gapCardEl.className = 'balance-gap';
+    gapStatusEl.textContent = '系統長期短缺';
+    const yearsToEmpty = Math.abs(4 / gap);
+    gapMeaningEl.textContent =
+      `候選池會以每年 ${Math.abs(gap).toFixed(2)} 位的速度縮減,約 ${yearsToEmpty.toFixed(0)} 年後池子會見底。`;
+  } else {
+    gapCardEl.className = 'balance-gap';
+    gapStatusEl.textContent = '嚴重短缺 · 系統不可持續';
+    gapMeaningEl.textContent =
+      `每年短缺 ${Math.abs(gap).toFixed(2)} 位,候選池將快速耗盡,可能需要降低資格門檻或延長社長任期。`;
+  }
+
+  // 10 年走勢模擬
+  renderProjection(yearlySupply, yearlyDemand);
+
+  // 平衡方案計算
+  // 方案 A: 需要多少新人才能達到 yearlySupply = 2
+  // 公式: newcomers × retain1 × retain2 × eligibleIn10 × 2 = 2
+  // newcomers = 1 / (retain1 × retain2 × eligibleIn10)
+  const requiredNewcomers = 1 / (p.retain1 * p.retain2 * eligibleIn10);
+  document.getElementById('sol-newcomers').textContent = Math.ceil(requiredNewcomers);
+  document.getElementById('sol-newcomers-delta').textContent =
+    Math.max(0, Math.ceil(requiredNewcomers) - n1);
+
+  // 方案 B: 需要多少留存率
+  // newcomers × retain1 × retain2 × eligibleIn10 × 2 = 2
+  // retain1 = 1 / (newcomers × retain2 × eligibleIn10)
+  const requiredRetain1 = 1 / (n1 * p.retain2 * eligibleIn10);
+  const requiredRetain1Pct = Math.min(100, requiredRetain1 * 100);
+  document.getElementById('sol-retain').textContent = requiredRetain1Pct.toFixed(0);
+  document.getElementById('sol-retain-now').textContent = (p.retain1 * 100).toFixed(0);
+  document.getElementById('sol-retain-delta').textContent =
+    Math.max(0, requiredRetain1Pct - p.retain1 * 100).toFixed(0);
+}
+
+function renderProjection(yearlySupply, yearlyDemand) {
+  const chart = document.getElementById('projection-chart');
+  chart.innerHTML = '';
+
+  // Y 軸標籤
+  const yAxis = document.createElement('div');
+  yAxis.className = 'year-axis';
+  yAxis.innerHTML = '<span>8</span><span>6</span><span>4</span><span>2</span><span>0</span>';
+  chart.appendChild(yAxis);
+
+  // 起始池 4 人
+  let pool = 4;
+  const yearlyGap = yearlySupply - yearlyDemand;
+  const maxHeight = 180;
+  const maxValue = 8;
+
+  for (let year = 1; year <= 10; year++) {
+    pool = Math.max(0, pool + yearlyGap);
+
+    const col = document.createElement('div');
+    col.className = 'year-col';
+
+    const heightPct = Math.min(100, (pool / maxValue) * 100);
+    const heightPx = (heightPct / 100) * maxHeight;
+
+    const valueEl = document.createElement('div');
+    valueEl.className = 'year-value';
+    valueEl.textContent = pool.toFixed(1);
+
+    const barEl = document.createElement('div');
+    barEl.className = 'year-pool-bar';
+    if (pool < 0.5) barEl.classList.add('empty');
+    else if (pool < 2) barEl.classList.add('critical');
+    barEl.style.height = Math.max(2, heightPx) + 'px';
+
+    const labelEl = document.createElement('div');
+    labelEl.className = 'year-label';
+    labelEl.textContent = 'Y' + year;
+
+    col.appendChild(valueEl);
+    col.appendChild(barEl);
+    col.appendChild(labelEl);
+    chart.appendChild(col);
+  }
+}
+
+function renderTimeline(eligibleTerm, params) {
+  const timeline = document.getElementById('timeline');
+  timeline.innerHTML = '';
+
+  const totalTerms = Math.max(eligibleTerm + 1, 8);
+
+  // 一條典型路徑:在達成期前安排兩次「組長/副社」資歷
+  // 第一次組長通常較早(第 2~4 期),第二次可能是組長或副社長
+  const firstLeaderTerm = Math.max(2, Math.floor(eligibleTerm * 0.4));
+  const secondLeaderTerm = eligibleTerm - 1;
+  // 若達成期 >= 6,第二次資歷有機會是副社長(資深者)
+  const secondIsVP = eligibleTerm >= 6;
+
+  for (let t = 1; t <= totalTerms; t++) {
+    const block = document.createElement('div');
+    block.className = 'term-block';
+
+    let role;
+    if (t === 1) {
+      role = '新人';
+      block.classList.add('new');
+    } else if (t === eligibleTerm) {
+      role = '✓ 取得資格';
+      block.classList.add('eligible');
+    } else if (t === firstLeaderTerm) {
+      role = '組長';
+      block.classList.add('leader');
+    } else if (t === secondLeaderTerm) {
+      if (secondIsVP) {
+        role = '副社長';
+        block.classList.add('vp');
+      } else {
+        role = '組長';
+        block.classList.add('leader');
+      }
+    } else {
+      role = '社友';
+      block.classList.add('member');
+    }
+
+    const years = (t * 0.5).toFixed(1);
+
+    block.innerHTML = `
+      <div class="term-num">T${String(t).padStart(2, '0')}</div>
+      <div class="term-role">${role}</div>
+      <div class="term-year">${years} yr</div>
+    `;
+
+    timeline.appendChild(block);
+  }
+}
+
+// 監聽
+document.querySelectorAll('input[type="range"]').forEach(el => {
+  el.addEventListener('input', update);
 });
 
-/* =================================================
-   興趣動態列表
-   ================================================= */
-function addHobby() {
-  const id = Date.now();
-  hobbies.push({ id, name:'', role:'' });
-  renderHobbies();
-}
-
-function removeHobby(id) {
-  const idx = hobbies.findIndex(h => h.id === id);
-  if (idx !== -1) hobbies.splice(idx, 1);
-  renderHobbies();
-}
-
-function updateHobby(id, field, val) {
-  const h = hobbies.find(h => h.id === id);
-  if (h) h[field] = val;
-}
-
-function renderHobbies() {
-  const wrap = document.getElementById('hobbyList');
-  if (hobbies.length === 0) {
-    wrap.innerHTML = '<div style="text-align:center;padding:16px;color:#888;font-style:italic;font-family:Fraunces,serif;font-size:13px;">尚未新增任何興趣，請點下方按鈕開始</div>';
-    return;
-  }
-  wrap.innerHTML = hobbies.map((h, i) => `
-    <div class="hobby-item">
-      <div class="hobby-head">
-        <span class="hobby-label">興趣 #${String(i+1).padStart(2,'0')}</span>
-        <button class="hobby-remove" onclick="removeHobby(${h.id})">移除</button>
-      </div>
-      <input type="text" class="q-input" placeholder="興趣名稱（例如：彈吉他、煮菜、爬山、看小說...）"
-        value="${h.name}" onchange="updateHobby(${h.id}, 'name', this.value)" />
-      <div class="question-hint" style="margin:8px 0 6px">在這個興趣裡，你的角色比較像是：</div>
-      <div class="q-options hobby-role-group" data-hobby-id="${h.id}">
-        <button class="q-option ${h.role==='creator'?'selected':''}" onclick="setHobbyRole(${h.id}, 'creator', this)">創作者 / 主導者</button>
-        <button class="q-option ${h.role==='performer'?'selected':''}" onclick="setHobbyRole(${h.id}, 'performer', this)">表演者 / 展示者</button>
-        <button class="q-option ${h.role==='organizer'?'selected':''}" onclick="setHobbyRole(${h.id}, 'organizer', this)">組織者 / 召集人</button>
-        <button class="q-option ${h.role==='learner'?'selected':''}" onclick="setHobbyRole(${h.id}, 'learner', this)">學習者 / 鑽研者</button>
-        <button class="q-option ${h.role==='collaborator'?'selected':''}" onclick="setHobbyRole(${h.id}, 'collaborator', this)">協作者 / 配合者</button>
-        <button class="q-option ${h.role==='consumer'?'selected':''}" onclick="setHobbyRole(${h.id}, 'consumer', this)">欣賞者 / 消費者</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function setHobbyRole(id, role, btn) {
-  updateHobby(id, 'role', role);
-  const group = btn.parentElement;
-  group.querySelectorAll('.q-option').forEach(o => o.classList.toggle('selected', o === btn));
-}
-
-renderHobbies();
-
-/* =================================================
-   重設
-   ================================================= */
-function resetSelf() {
-  if (!confirm('確定要重設所有回答嗎？')) return;
-  Object.keys(answers).forEach(k => delete answers[k]);
-  hobbies.length = 0;
-  document.querySelectorAll('.q-option').forEach(o => o.classList.remove('selected'));
-  document.querySelectorAll('.q-input').forEach(i => i.value = '');
-  renderHobbies();
-  document.getElementById('resultBoard').classList.remove('show');
-}
-
-/* =================================================
-   核心：分析自我
-   ================================================= */
-function analyzeSelf() {
-  const scores = { specialist: 1.0, core: 1.0, soft: 1.0 };  // 起始基準分
-  const evidences = [];
-
-  // 處理各題單選
-  ['schoolType','clubRole','sport','organization','english','jobLength'].forEach(key => {
-    const val = answers[key];
-    if (!val) return;
-    const rule = SCORING_RULES[key]?.[val];
-    if (rule) {
-      scores.specialist += rule.specialist;
-      scores.core += rule.core;
-      scores.soft += rule.soft;
-      const type = pickDominantType(rule);
-      evidences.push({ type, text: rule.evidence, point: scoreSummaryText(rule) });
-    }
-  });
-
-  // 處理證照（複選）
-  if (answers.certs && answers.certs.length > 0) {
-    answers.certs.forEach(c => {
-      const rule = SCORING_RULES.certs[c];
-      if (rule) {
-        scores.specialist += rule.specialist;
-        scores.core += rule.core;
-        scores.soft += rule.soft;
-        const type = pickDominantType(rule);
-        evidences.push({ type, text: rule.evidence, point: scoreSummaryText(rule) });
-      }
-    });
-  }
-
-  // 處理興趣（每個興趣的角色）
-  hobbies.forEach(h => {
-    if (!h.role) return;
-    const rule = SCORING_RULES.hobbyRole[h.role];
-    if (rule) {
-      // 興趣加分減半（避免多個興趣灌爆分數）
-      const factor = 0.6;
-      scores.specialist += rule.specialist * factor;
-      scores.core += rule.core * factor;
-      scores.soft += rule.soft * factor;
-      const type = pickDominantType(rule);
-      const hobbyName = h.name.trim() || '某個興趣';
-      evidences.push({
-        type,
-        text: `<strong>「${hobbyName}」</strong>：${rule.evidence}`,
-        point: scoreSummaryText(rule, factor)
-      });
-    }
-  });
-
-  // 限制最高 5 分
-  ['specialist','core','soft'].forEach(k => {
-    scores[k] = Math.max(0, Math.min(5, scores[k]));
-  });
-
-  // 若所有題都沒答，警告
-  const answeredCount = Object.keys(answers).filter(k => {
-    const v = answers[k];
-    return Array.isArray(v) ? v.length > 0 : !!v;
-  }).length + hobbies.filter(h => h.role).length;
-
-  if (answeredCount === 0) {
-    alert('請至少回答 1 題後再產生報告');
-    return;
-  }
-
-  // 渲染
-  renderRadar(scores);
-  renderScoreSummary(scores);
-  renderEvidences(evidences);
-  renderCareerMatch(scores);
-
-  document.getElementById('resultBoard').classList.add('show');
-  document.getElementById('resultBoard').scrollIntoView({ behavior:'smooth', block:'start' });
-}
-
-function pickDominantType(rule) {
-  const arr = [['specialist', rule.specialist], ['core', rule.core], ['soft', rule.soft]];
-  arr.sort((a, b) => b[1] - a[1]);
-  return arr[0][1] > 0 ? arr[0][0] : 'core';
-}
-
-function scoreSummaryText(rule, factor = 1) {
-  const parts = [];
-  if (rule.specialist) parts.push(`職 ${(rule.specialist*factor>0?'+':'')}${(rule.specialist*factor).toFixed(1)}`);
-  if (rule.core) parts.push(`通 ${(rule.core*factor>0?'+':'')}${(rule.core*factor).toFixed(1)}`);
-  if (rule.soft) parts.push(`軟 ${(rule.soft*factor>0?'+':'')}${(rule.soft*factor).toFixed(1)}`);
-  return parts.join(' · ') || '—';
-}
-
-/* === 雷達圖 === */
-function renderRadar(scores) {
-  const svg = document.getElementById('radarChart');
-  const cx = 200, cy = 210, R = 130;
-  const angles = [-Math.PI/2, -Math.PI/2 + 2*Math.PI/3, -Math.PI/2 + 4*Math.PI/3];
-  const labels = ['職業專業', '通用核心', '軟實力'];
-  const colors = ['#C8442E','#2E5C8A','#7A6B3F'];
-  const values = [scores.specialist, scores.core, scores.soft];
-
-  let html = '';
-  for (let i = 5; i >= 1; i--) {
-    const r = R * (i/5);
-    const pts = angles.map(a => `${cx + r*Math.cos(a)},${cy + r*Math.sin(a)}`).join(' ');
-    html += `<polygon points="${pts}" fill="${i%2===0 ? '#FAFAF5' : '#F0EBDC'}" stroke="#999" stroke-width="0.5"/>`;
-  }
-  angles.forEach(a => {
-    html += `<line x1="${cx}" y1="${cy}" x2="${cx + R*Math.cos(a)}" y2="${cy + R*Math.sin(a)}" stroke="#888" stroke-width="0.5" stroke-dasharray="2,2"/>`;
-  });
-  const dataPts = angles.map((a, i) => {
-    const r = R * (values[i] / 5);
-    return `${cx + r*Math.cos(a)},${cy + r*Math.sin(a)}`;
-  }).join(' ');
-  html += `<polygon points="${dataPts}" fill="rgba(46,92,138,0.18)" stroke="#1A1A1A" stroke-width="1.5"/>`;
-  angles.forEach((a, i) => {
-    const r = R * (values[i] / 5);
-    const x = cx + r*Math.cos(a), y = cy + r*Math.sin(a);
-    html += `<circle cx="${x}" cy="${y}" r="5" fill="${colors[i]}" stroke="#1A1A1A" stroke-width="1.5"/>`;
-  });
-  angles.forEach((a, i) => {
-    const lr = R + 26;
-    const x = cx + lr*Math.cos(a), y = cy + lr*Math.sin(a);
-    html += `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" font-family="Noto Serif TC" font-weight="700" font-size="14" fill="${colors[i]}">${labels[i]}</text>`;
-    html += `<text x="${x}" y="${y+16}" text-anchor="middle" dominant-baseline="middle" font-family="JetBrains Mono" font-size="11" fill="#3D3D3D">${values[i].toFixed(1)} / 5</text>`;
-  });
-  for (let i = 1; i <= 5; i++) {
-    const y = cy - R*(i/5);
-    html += `<text x="${cx+4}" y="${y+3}" font-family="JetBrains Mono" font-size="8" fill="#888">${i}</text>`;
-  }
-
-  svg.innerHTML = html;
-}
-
-/* === 分數摘要 === */
-function renderScoreSummary(scores) {
-  const colors = { specialist:'#C8442E', core:'#2E5C8A', soft:'#7A6B3F' };
-  const names = { specialist:'職業專業', core:'通用核心', soft:'軟實力' };
-  let html = '';
-  ['specialist','core','soft'].forEach(type => {
-    html += `<div class="score-row">
-      <div class="score-row-label">
-        <span class="dot" style="background:${colors[type]}"></span>
-        ${names[type]}
-      </div>
-      <div class="score-row-value" style="color:${colors[type]}">${scores[type].toFixed(2)}</div>
-    </div>`;
-  });
-  document.getElementById('scoreSummary').innerHTML = html;
-
-  const max = Math.max(scores.specialist, scores.core, scores.soft);
-  const min = Math.min(scores.specialist, scores.core, scores.soft);
-  const dominant = scores.specialist === max ? '職業專業' : (scores.core === max ? '通用核心' : '軟實力');
-  const gap = max - min;
-  let comment = '';
-  if (gap > 1.5) {
-    comment = `你的能力分布有明顯偏向：「${dominant}」是你的強項，其他面向落差較大（差距 ${gap.toFixed(1)} 分）。可考慮針對較弱的支柱補強，會大幅增加職業選擇彈性。`;
-  } else if (gap < 0.5) {
-    comment = `你的三大能力分布相當平均（落差僅 ${gap.toFixed(1)} 分），這是「跨領域人才」的典型輪廓——適合需要整合多元能力的職位。`;
-  } else {
-    comment = `你的整體強項在「${dominant}」，三大能力呈現自然的傾斜，是健康的職業輪廓。`;
-  }
-  document.getElementById('overallComment').textContent = comment;
-}
-
-/* === 證據列表 === */
-function renderEvidences(evidences) {
-  const wrap = document.getElementById('evidenceList');
-  const typeLabel = { specialist:'職業', core:'通用', soft:'軟實力' };
-  wrap.innerHTML = evidences.map(e => `
-    <div class="evidence-row" data-type="${e.type}">
-      <span class="evidence-tag">${typeLabel[e.type]}</span>
-      <div class="evidence-text">${e.text}</div>
-      <span class="evidence-point">${e.point}</span>
-    </div>
-  `).join('');
-}
-
-/* === 職業推薦 === */
-function renderCareerMatch(scores) {
-  const userVec = [scores.specialist, scores.core, scores.soft];
-  const results = CAREER_DB.map(c => {
-    let distSq = 0;
-    for (let i = 0; i < 3; i++) {
-      distSq += Math.pow(c.weights[i] - userVec[i], 2);
-    }
-    const dist = Math.sqrt(distSq);
-    const match = Math.max(0, Math.round((1 - dist / 8.66) * 100));
-    return { ...c, match };
-  }).sort((a, b) => b.match - a.match).slice(0, 5);
-
-  const html = results.map((c, i) => `
-    <div class="career-card">
-      <div class="career-rank">${String(i+1).padStart(2,'0')}</div>
-      <div class="career-body">
-        <h4>${c.name}</h4>
-        <div class="career-en">${c.en}</div>
-        <p>${c.desc}</p>
-      </div>
-      <div class="career-match">
-        <div class="career-match-num">${c.match}<span style="font-size:14px">%</span></div>
-        <div class="career-match-label">MATCH</div>
-      </div>
-    </div>
-  `).join('');
-  document.getElementById('careerList').innerHTML = html;
-}
-
-/* =================================================
-   MODE 2: 行業分析
-   ================================================= */
-function quickAnalyze(name) {
-  document.getElementById('industryInput').value = name;
-  analyzeIndustry();
-}
-
-function analyzeIndustry() {
-  const input = document.getElementById('industryInput').value.trim();
-  if (!input) { alert('請先輸入或選擇一個行業'); return; }
-
-  const data = INDUSTRY_DB[input] || INDUSTRY_DB._default;
-  const isCustom = !INDUSTRY_DB[input];
-
-  document.getElementById('industryName').textContent = input + (isCustom ? '（通用範本）' : '');
-  const total = data.specialist.length + data.core.length + data.soft.length;
-  document.getElementById('industryMeta').textContent = `EN: ${data.en} · ITEMS: ${total}`;
-
-  const pillars = [
-    { type:'specialist', num:'01', title:'職業專業能力', en:'Specialist Tasks', items:data.specialist, weight:0.45 },
-    { type:'core', num:'02', title:'通用核心能力', en:'Core Competencies', items:data.core, weight:0.35 },
-    { type:'soft', num:'03', title:'軟實力', en:'Soft Skills', items:data.soft, weight:0.20 }
-  ];
-
-  const grid = document.getElementById('pillarGrid');
-  grid.innerHTML = pillars.map(p => `
-    <div class="pillar" data-type="${p.type}">
-      <div class="pillar-num">${p.num}</div>
-      <div class="pillar-title">${p.title}</div>
-      <div class="pillar-title-en">${p.en}</div>
-      <ul class="skill-list">
-        ${p.items.map(it => `<li>${it}</li>`).join('')}
-      </ul>
-      <div class="weight-bar">
-        <span>WEIGHT</span>
-        <div class="weight-track"><div class="weight-fill" style="width:${p.weight*100}%"></div></div>
-        <span>${Math.round(p.weight*100)}%</span>
-      </div>
-    </div>
-  `).join('');
-
-  document.getElementById('industryResult').classList.add('show');
-  document.getElementById('industryResult').scrollIntoView({ behavior:'smooth', block:'start' });
-}
+// 初始化
+update();
 </script>
 </body>
 </html>
